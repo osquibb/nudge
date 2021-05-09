@@ -1,0 +1,23 @@
+{
+  "name": "nudge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osquibb/nudge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osquibb/nudge/issues"
+  },
+  "homepage": "https://github.com/osquibb/nudge#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
