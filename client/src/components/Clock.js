@@ -18,7 +18,7 @@ export default function Clock(props) {
   
   return(
     <div>
-      <h1>Clock here: {props.name}</h1>
+      <h1>Clock: {props.name}</h1>
       <p>Now: {time.toLocaleString()}</p>
     </div>
   )
