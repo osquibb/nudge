@@ -42,7 +42,6 @@ passport.deserializeUser((id, cb) => {
   cb(null, DUMMY_USER)
 })
 
-// create a GET route
 app.get('/health', (req, res) => {
   const isAuthenticated = !!req.user
   if (isAuthenticated) {

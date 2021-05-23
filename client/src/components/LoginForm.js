@@ -5,21 +5,29 @@ export default function LoginForm(props) {
 
   const [user, setUser] = useState({
     username: '',
-    password: ''
+    password: '',
+    authenticated: false
   })
+
   const [health, setHealth] = useState('N/A')
 
-  const onUsernameChange = username => setUser({
-    ...user,
-    username
-  })
-  
-  const onPasswordChange = password => setUser({
-    ...user,
-    password
-  })
+  const onUsernameChange = username => setUser(prevUser => 
+    ({ ...prevUser, username })
+  )
 
-  const onSignIn = () => axios.post('/login', user)
+  const onPasswordChange = password => setUser(prevUser =>
+    ({ ...prevUser, password })
+  )
+
+  const onSignIn = async () => {
+    try {
+      await axios.post('/login', user)
+      setUser(prevUser => ({ ...prevUser, authenticated: true }))
+    } catch {
+      setUser(prevUser => ({ ...prevUser, authenticated: false }))
+    }
+  }
+
   const onHealthCheck = async () => {
     const { data: { health } } = await axios.get('/health')
     setHealth(health || 'N/A')
@@ -27,7 +35,6 @@ export default function LoginForm(props) {
 
   return(
     <div>
-      <h3>Login</h3>
       <input
         type="text"
         placeholder="Username"
@@ -46,7 +53,8 @@ export default function LoginForm(props) {
       <button onClick={onHealthCheck}>
         Health Check
       </button>
-      <p>{health}</p>
+      <p>{ user.authenticated ? '' : 'Not' } Signed In</p>
+      <p>Health: {health}</p>
     </div>
   )
 }
