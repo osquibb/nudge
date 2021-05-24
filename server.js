@@ -50,15 +50,18 @@ app.get('/health', (req, res) => {
       health: 'OK'
     })
   } else {
-    res.json({
-      success: 'false'
-    })
+    res.send(401)
   }
 })
 
 app.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({
-    authenticated: 'true',
+    authenticated: true,
     user: req.user
   })
+})
+
+app.get('/logout', (req, res) => {
+  req.logOut()
+  res.send(200)
 })
