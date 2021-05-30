@@ -16,17 +16,6 @@ const db = knex({
   }
 })
 
-const addUser = async user => {
-  try {
-    const newUserId = await db('users').insert(user, 'id')
-    console.log(newUserId)
-  } catch (e) {
-    console.error(e)
-  }
-}
-
-addUser({ username: 'john_doe', password: '12345' })
-
 const app = express()
 
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
@@ -38,6 +27,12 @@ const port = process.env.PORT || 5000
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`))
+
+// try {
+//   addUser({ username: 'john_doe', password: '12345' })
+// } catch (e) {
+//   console.error(e)
+// }
 
 const DUMMY_USER = {
   id: 1,
