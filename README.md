@@ -29,6 +29,7 @@ You will also see any lint errors in the console.
 
 ## Database Configuration
 A PostgreSQL database should be running on http://localhost:5432 
+
 See configuration in ~/server.js.
 
 ## Database Migrations
