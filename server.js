@@ -1,7 +1,45 @@
 const express = require('express')
-const session = require("express-session")
+const session = require('express-session')
+const knex = require('knex')
 const passport = require('passport')
-const LocalStrategy = require("passport-local").Strategy
+const LocalStrategy = require('passport-local').Strategy
+
+const db = knex({
+  client: 'pg',
+  debug: true,
+  connection: {
+    host: '127.0.0.1',
+    port: '5432',
+    user : 'nudge_admin',
+    password : 'password',
+    database : 'nudge'
+  }
+})
+
+const createUsersTable = async () => {
+  try {
+    await db.schema.dropTableIfExists('users')
+    await db.schema.createTable('users', table => {
+      table.increments('id')
+      table.string('username')
+      table.string('password')
+      table.timestamps(true, true)
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+const addUser = async user => {
+  try {
+    await createUsersTable()
+    await db('users').insert(user, 'id')
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+addUser({ username: 'john_doe', password: '12345' })
 
 const app = express()
 
