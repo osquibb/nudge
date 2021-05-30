@@ -16,24 +16,10 @@ const db = knex({
   }
 })
 
-const createUsersTable = async () => {
-  try {
-    await db.schema.dropTableIfExists('users')
-    await db.schema.createTable('users', table => {
-      table.increments('id')
-      table.string('username')
-      table.string('password')
-      table.timestamps(true, true)
-    })
-  } catch (e) {
-    console.error(e)
-  }
-}
-
 const addUser = async user => {
   try {
-    await createUsersTable()
-    await db('users').insert(user, 'id')
+    const newUserId = await db('users').insert(user, 'id')
+    console.log(newUserId)
   } catch (e) {
     console.error(e)
   }
