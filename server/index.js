@@ -28,11 +28,11 @@ const port = process.env.PORT || 5000
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`))
 
-try {
-  db('users').insert({ username: 'john_doe', password: '12345' })
-} catch (e) {
-  console.error(e)
-}
+// try {
+//   db('users').insert({ username: 'john_doe', password: '12345' })
+// } catch (e) {
+//   console.error(e)
+// }
 
 const DUMMY_USER = {
   id: 1,
