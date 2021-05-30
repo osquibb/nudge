@@ -1,4 +1,6 @@
-// TODO import db
+const db = require('../../dbConfig')
 
-export const addUser = async user =>
-  await db('users').insert(user, 'id')
+module.exports = {
+  addUser: async user =>
+    await db('users').insert(user, 'id')
+}
