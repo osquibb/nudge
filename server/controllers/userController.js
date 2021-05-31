@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const passport = require('../passport')
 const { addUser, listUsers } = require('../services/userService')
 
 router.post('/', async (req, res) => {

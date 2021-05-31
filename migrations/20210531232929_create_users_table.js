@@ -2,8 +2,8 @@
 exports.up = function(knex) {
   return  knex.schema.dropTableIfExists('users')
   .createTable('users', table => {
-    table.increments('id')
-    table.string('username')
+    table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'))
+    table.string('username').notNullable()
     table.string('password')
     table.timestamps(true, true)
   })
