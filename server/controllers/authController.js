@@ -3,14 +3,14 @@ const passport = require('../passport')
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({
-    authenticated: true,
+    isAuthenticated: true,
     user: req.user
   })
 })
 
 router.get('/logout', (req, res) => {
   req.logOut()
-  res.send(200)
+  res.sendStatus(200)
 })
 
 router.get('/status', (req, res) => {

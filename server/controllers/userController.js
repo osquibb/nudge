@@ -7,9 +7,17 @@ router.post('/', async (req, res) => {
   res.json({ id })
 })
 
-router.get('/', passport.authenticate('local'), async (req, res) => {
+router.get('/', async (req, res) => {
+  // auth
+  if (!req.user) {
+    res.sendStatus(401)
+  }
+  // operation
   const users = await listUsers()
-  res.json({ users })
+  res.json({
+    test: 'hello',
+    users
+  })
 })
 
 module.exports = router
