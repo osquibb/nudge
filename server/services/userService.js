@@ -1,6 +1,14 @@
-const db = require('../../dbConfig')
+const db = require('../../db')
 
 module.exports = {
-  addUser: async user =>
-    await db('users').insert(user, 'id')
+  listUsers: async () =>
+    await db('users').select(),
+
+  addUser: async user => {
+    const id = await db('users').insert(user, 'id')
+    return id[0]
+  },
+
+  deleteUserById: async id =>
+    await db('users').where('id', id).del()
 }
