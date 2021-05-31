@@ -4,9 +4,16 @@ module.exports = {
   listUsers: async () =>
     await db('users').select(),
 
+  findUser: async user => {
+    const resultSet = await db('users')
+      .where('username', user.username)
+      .andWhere('password', user.password)
+    return resultSet[0]
+  },
+
   addUser: async user => {
-    const id = await db('users').insert(user, 'id')
-    return id[0]
+    const resultSet = await db('users').insert(user, 'id')
+    return resultSet[0]
   },
 
   deleteUserById: async id =>

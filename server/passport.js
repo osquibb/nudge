@@ -1,15 +1,13 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const { findUser } = require('./services/userService')
 
-const DUMMY_USER = {
-  id: 1,
-  username: "john",
-}
-
-const localStrategy = new LocalStrategy((username, password, done) => {
-  if (username === 'john' && password === 'doe') {
+const localStrategy = new LocalStrategy(async (username, password, done) => {
+  const user = await findUser({ username, password })
+  if (!!user) {
     console.log('authenticated')
-    return done(null, DUMMY_USER)
+    console.log('user: ', user)
+    return done(null, user)
   } else {
     console.log('incorrect credentials')
     return done(null, false)
@@ -25,7 +23,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((id, cb) => {
   console.log(`deserializeUser ${id}`)
-  cb(null, DUMMY_USER)
+  cb(null, id)
 })
 
 module.exports = passport
