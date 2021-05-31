@@ -13,10 +13,7 @@ router.get('/', async (req, res) => {
   }
   // operation
   const users = await listUsers()
-  res.json({
-    test: 'hello',
-    users
-  })
+  res.json({ users })
 })
 
 module.exports = router
