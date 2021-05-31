@@ -11,6 +11,11 @@ module.exports = {
     return resultSet[0]
   },
 
+  findUserById: async id => {
+    const resultSet = await db('users').where('id', id)
+    return resultSet[0]
+  },
+
   addUser: async user => {
     const resultSet = await db('users').insert(user, 'id')
     return resultSet[0]
