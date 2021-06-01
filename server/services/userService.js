@@ -6,8 +6,8 @@ module.exports = {
 
   findUser: async user => {
     const resultSet = await db('users')
-      .where('username', user.username)
-      .andWhere('password', user.password)
+      .whereRaw('password = crypt(?, password)', [user.password])
+      .andWhere('username', user.username)
     return resultSet[0]
   },
 
@@ -17,8 +17,11 @@ module.exports = {
   },
 
   addUser: async user => {
-    const resultSet = await db('users').insert(user, 'id')
-    return resultSet[0]
+    const resultSet = await db.raw(
+      "INSERT INTO users (username, password) VALUES (?, crypt(?, gen_salt('bf'))) RETURNING id",
+      [user.username, user.password]
+    )
+    return resultSet.rows?.[0]?.id
   },
 
   deleteUserById: async id =>
