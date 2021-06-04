@@ -4,7 +4,7 @@ exports.up = function(knex) {
   .createTable('users', table => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'))
     table.string('username').notNullable()
-    table.string('password')
+    table.string('password').nullable()
     table.timestamps(true, true)
   })
 };
