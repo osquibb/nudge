@@ -19,6 +19,16 @@ router.get('/', async (req, res) => {
   res.json({ games })
 })
 
+router.get('/myList', async ({ user }, res) => {
+  // auth
+  // if (!req.user) {
+  //   res.sendStatus(401)
+  // }
+  // operation
+  const games = await listGamesByUserId(user.id)
+  res.json(games)
+})
+
 router.get('/:id', async ({ params }, res) => {
   // auth
   // if (!req.user) {

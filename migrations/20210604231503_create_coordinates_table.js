@@ -2,14 +2,14 @@
 exports.up = function(knex) {
   return  knex.schema.dropTableIfExists('coordinates')
   .createTable('coordinates', table => {
-    table.uuid('userId').notNullable()
-    table.uuid('gameId').notNullable()
-    table.foreign('userId')
+    table.uuid('user_id').notNullable()
+    table.uuid('game_id').notNullable()
+    table.foreign('user_id')
       .references('id')
       .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
-    table.foreign('gameId')
+    table.foreign('game_id')
       .references('id')
       .inTable('games')
       .onUpdate('CASCADE')
@@ -17,7 +17,7 @@ exports.up = function(knex) {
     table.decimal('latitude').notNullable()
     table.decimal('longitude').notNullable()
     table.timestamps(true, true)
-    table.index(['userId', 'gameId'])
+    table.index(['user_id', 'game_id'])
   })
 };
 
