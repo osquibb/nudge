@@ -12,7 +12,7 @@ module.exports = {
   },
 
   findUserById: async id => {
-    const resultSet = await db('users').where('id', id)
+    const resultSet = await db('users').where({ id })
     return resultSet[0]
   },
 
@@ -25,5 +25,5 @@ module.exports = {
   },
 
   deleteUserById: async id =>
-    await db('users').where('id', id).del()
+    await db('users').where({ id }).del()
 }

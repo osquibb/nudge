@@ -3,6 +3,7 @@ const session = require('express-session')
 const passport = require('./passport')
 const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
+const gameController = require('./controllers/gameController')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(passport.session())
 // Controllers
 app.use('/auth', authController)
 app.use('/user', userController)
+app.use('/game', gameController)
 
 const port = process.env.PORT || 5000
 
