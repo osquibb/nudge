@@ -4,17 +4,11 @@ module.exports = {
   listUsers: async () =>
     await db('users').select(),
 
-  findUser: async user => {
-    const resultSet = await db('users')
-      .whereRaw('password = crypt(?, password)', [user.password])
-      .andWhere('username', user.username)
-    return resultSet[0]
-  },
+  findUser: async user => await db('users')
+    .whereRaw('password = crypt(?, password)', [user.password])
+    .andWhere('username', user.username).first(),
 
-  findUserById: async id => {
-    const resultSet = await db('users').where({ id })
-    return resultSet[0]
-  },
+  findUserById: async id => await db('users').where({ id }).first(),
 
   addUser: async user => {
     const resultSet = await db.raw(

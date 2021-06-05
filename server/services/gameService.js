@@ -6,10 +6,7 @@ module.exports = {
   listGamesByUserId : async userId =>
     await db('games').innerJoin('coordinates', 'games.id', 'coordinates.game_id').where({ user_id: userId }),
   
-  findGameById: async id => {
-    const resultSet = await db('games').where('id', id)
-    return resultSet[0]
-  },
+  findGameById: async id => await db('games').where('id', id).first(),
 
   addGame: async ({ title, expiration = null }) => {
     const resultSet = await db('games').insert({ title, expiration }).returning('id')
@@ -22,7 +19,7 @@ module.exports = {
     await db('coordinates').insert({ user_id: userId, game_id: gameId, latitude, longitude }),
 
   updateCoordinatesByUserIdAndGameId: async (userId, gameId, latitude, longitude) => {
-    const resultSet = await db('coordinates').where({ user_id: userId, game_id: gameId }).update({ latitude, longitude }).returning('*')
+    const resultSet = await db('coordinates').update({ latitude, longitude }).where({ user_id: userId, game_id: gameId }).returning('*')
     return resultSet[0]
   }
 }
