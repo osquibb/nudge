@@ -5,14 +5,17 @@ const {
     addUserRole,
     deleteUserRole
 } = require('../services/userService')
-const { isAdmin } = require('../services/authService')
+const { isAdmin } = require('../utils/authUtils')
 
-router.post('/', async (req, res) => {
-  const id = await addUser(req.body)
+router.post('/', async ({ body }, res) => {
+  // auth
+
+  // operation
+  const id = await addUser(body)
   res.json({ id })
 })
 
-router.get('/', async (req, res) => {
+router.get('/', async ({ user }, res) => {
   // auth
   if (!isAdmin(user)) {
     res.sendStatus(401)
@@ -22,23 +25,23 @@ router.get('/', async (req, res) => {
   res.json({ users })
 })
 
-router.post('/:id/addRole', async ({ params, body }, res) => {
+router.post('/:userId/addRole', async ({ user, params, body }, res) => {
   //auth
   if (!isAdmin(user)) {
     res.sendStatus(401)
   }
   // operation
-  await addUserRole(params.id, body.roleId)
+  await addUserRole(params.userId, body.roleId)
   res.sendStatus(200)
 })
 
-router.delete('/:id/removeRole', async ({ params, body }, res) => {
+router.delete('/:userId/removeRole', async ({ user, params, body }, res) => {
   //auth
   if (!isAdmin(user)) {
     res.sendStatus(401)
   }
   // operation
-  await deleteUserRole(params.id, body.roleId)
+  await deleteUserRole(params.userId, body.roleId)
   res.sendStatus(200)
 })
 

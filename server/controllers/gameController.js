@@ -8,7 +8,7 @@ const {
     addUserToGameByUserIdAndGameId,
     updateCoordinatesByUserIdAndGameId
 } = require('../services/gameService')
-const { isAdmin, isPlayer } = require('../services/authService')
+const { isAdmin, isPlayer } = require('../utils/authUtils')
 
 router.get('/', async ({ user }, res) => {
   // auth

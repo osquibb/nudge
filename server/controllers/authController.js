@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const passport = require('../passport')
-const { isAnonymous } = require('../services/authService')
+const { isAnonymous } = require('../utils/authUtils')
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({
