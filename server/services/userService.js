@@ -19,5 +19,11 @@ module.exports = {
   },
 
   deleteUserById: async id =>
-    await db('users').where({ id }).del()
+    await db('users').where({ id }).del(),
+
+  addUserRole: async (userId, roleId) => db('user_roles').insert({ user_id: userId, role_id: roleId }),
+
+  deleteUserRole: async (userId, roleId) => db('user_roles').where({ user_id: userId, role_id: roleId }).del(),
+
+  listRolesByUserId: async id => await db('roles').innerJoin('user_roles', 'roles.id', 'user_roles.role_id').where({ user_id: id })
 }
