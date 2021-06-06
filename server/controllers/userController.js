@@ -2,7 +2,6 @@ const router = require('express').Router()
 const {
     addUser,
     listUsers,
-    listRolesByUserId,
     addUserRole,
     deleteUserRole
 } = require('../services/userService')
@@ -20,16 +19,6 @@ router.get('/', async (req, res) => {
   // operation
   const users = await listUsers()
   res.json({ users })
-})
-
-router.get('/myRoles', async ({ user }, res) => {
-  // auth
-  if (!user) {
-    res.sendStatus(401)
-  }
-  // operation
-  const roles = await listRolesByUserId(user.id)
-  res.json({ roles })
 })
 
 router.post('/:id/addRole', async ({ params, body }, res) => {
