@@ -3,8 +3,8 @@ const db = require('../../db')
 module.exports = {
   listGames: async () => await db('games').select(),
 
-  listGamesByUserId : async userId =>
-    await db('games').innerJoin('coordinates', 'games.id', 'coordinates.game_id').where({ user_id: userId }),
+  listGamesByUserId : async user_id =>
+    await db('games').innerJoin('coordinates', 'games.id', 'coordinates.game_id').where({ user_id }),
   
   findGameById: async id => await db('games').where('id', id).first(),
 
@@ -15,11 +15,11 @@ module.exports = {
 
   deleteGameById: async id => await db('games').where({ id }).del(),
 
-  addUserToGameByUserIdAndGameId: async (userId, gameId, latitude = 0.0, longitude = 0.0) =>
-    await db('coordinates').insert({ user_id: userId, game_id: gameId, latitude, longitude }),
+  addUserToGameByUserIdAndGameId: async (user_id, game_id, latitude = 0.0, longitude = 0.0) =>
+    await db('coordinates').insert({ user_id, game_id, latitude, longitude }),
 
-  updateCoordinatesByUserIdAndGameId: async (userId, gameId, latitude, longitude) => {
-    const resultSet = await db('coordinates').update({ latitude, longitude }).where({ user_id: userId, game_id: gameId }).returning('*')
+  updateCoordinatesByUserIdAndGameId: async (user_id, game_id, latitude, longitude) => {
+    const resultSet = await db('coordinates').update({ latitude, longitude }).where({ user_id, game_id }).returning('*')
     return resultSet[0]
   }
 }

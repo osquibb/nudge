@@ -11,7 +11,7 @@ module.exports = {
   findUserById: async id => {
     const user = await db.select('id', 'username').from('users').where({ id }).first()
     if (!user) { throw new Error(`User with id ${id} not found.`) }
-    const roles = await db.select('id', 'name').from('roles').innerJoin('user_roles', 'roles.id', 'user_roles.role_id').where({ user_id: id })
+    const roles = await db.select('name').from('roles').innerJoin('user_roles', 'roles.id', 'user_roles.role_id').where({ user_id: id })
     return { ...user, roles }
   },
 
@@ -33,7 +33,7 @@ module.exports = {
 
   deleteUserById: async id => await db('users').where({ id }).del(),
 
-  addUserRole: async (userId, roleId) => db('user_roles').insert({ user_id: userId, role_id: roleId }),
+  addUserRole: async (user_id, role_id) => db('user_roles').insert({ user_id, role_id }),
 
-  deleteUserRole: async (userId, roleId) => db('user_roles').where({ user_id: userId, role_id: roleId }).del()
+  deleteUserRole: async (user_id, role_id) => db('user_roles').where({ user_id, role_id }).del()
 }

@@ -14,8 +14,8 @@ app.use(passport.session())
 
 // Controllers
 app.use('/auth', authController)
-app.use('/user', userController)
-app.use('/game', gameController)
+app.use('/users', userController)
+app.use('/games', gameController)
 
 const port = process.env.PORT || 5000
 
