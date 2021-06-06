@@ -16,11 +16,19 @@ module.exports = {
   },
 
   addUser: async user => {
-    const resultSet = await db.raw(
-      "INSERT INTO users (username, password) VALUES (?, crypt(?, gen_salt('bf'))) RETURNING id",
-      [user.username, user.password]
-    )
-    return resultSet.rows?.[0]?.id
+    let user_id
+    await db.transaction(async trx => {
+      const userResultSet = await trx.raw(
+        "INSERT INTO users (username, password) VALUES (?, crypt(?, gen_salt('bf'))) RETURNING id",
+        [user.username, user.password]
+      )
+      user_id = userResultSet.rows?.[0]?.id
+      await trx('user_roles').insert({
+        user_id,
+        role_id: trx.select('id').from('roles').where({ name: 'player' }).first()
+      })
+    })
+    return user_id
   },
 
   deleteUserById: async id => await db('users').where({ id }).del(),
