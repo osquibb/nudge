@@ -15,7 +15,7 @@ exports.up = function(knex) {
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
     table.timestamps(true, true)
-    table.index(['user_id', 'role_id'])
+    table.primary(['user_id', 'role_id'])
   })
 };
 

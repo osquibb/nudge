@@ -17,7 +17,7 @@ exports.up = function(knex) {
     table.decimal('latitude').notNullable()
     table.decimal('longitude').notNullable()
     table.timestamps(true, true)
-    table.index(['user_id', 'game_id'])
+    table.primary(['user_id', 'game_id'])
   })
 };
 
