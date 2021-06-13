@@ -5,9 +5,7 @@ import {
   Route
 } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
-import NavBar from './components/navigation/NavBar'
-import Clock from './components/Clock'
-import Login from './components/Login'
+import NavBar from './features/navigation/NavBar'
 
 function App() {
   return (
@@ -16,10 +14,10 @@ function App() {
       <Switch>
         <Container>
           <Route exact path="/">
-            <Clock name="test" />
+            <p>Home Route</p>
           </Route>
-          <Route path="/login">
-            <Login />
+          <Route path="/test">
+            <p>Test Route</p>
           </Route>
         </Container>
       </Switch>

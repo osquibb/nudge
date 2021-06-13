@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
+import LoginForm from '../user/LoginForm'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,8 +76,8 @@ export default function NavBar(props) {
               <MenuItem onClick={handleClose}>
                 <Link to='/'>Home</Link>
               </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to='/login'>Login</Link>
+              <MenuItem>
+                <LoginForm/>
               </MenuItem>
             </Menu>
           </div>

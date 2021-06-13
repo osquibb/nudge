@@ -2,15 +2,15 @@ const router = require('express').Router()
 const passport = require('../passport')
 const { isAnonymous } = require('../utils/authUtils')
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', passport.authenticate('local'), ({ user }, res) => {
   res.json({
-    isAuthenticated: true,
-    user: req.user
+    ...user,
+    isAuthenticated: !!user
   })
 })
 
-router.get('/logout', ({ user }, res) => {
-  if (isAnonymous(user)) {
+router.get('/logout', (req, res) => {
+  if (isAnonymous(req.user)) {
     res.sendStatus(401)
   }
   req.logOut()

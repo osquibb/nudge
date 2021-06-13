@@ -4,9 +4,19 @@ module.exports = {
   listUsers: async () =>
     await db('users').select(),
 
-  findUser: async user => await db('users')
-    .whereRaw('password = crypt(?, password)', [user.password])
-    .andWhere('username', user.username).first(),
+  findUser: async user => {
+    const foundUser = await db.select('id', 'username')
+      .from('users')
+      .whereRaw('password = crypt(?, password)', [user.password])
+      .andWhere('username', user.username)
+      .first()
+    if (!foundUser) { throw new Error(`User with username ${user.username} not found.`) }
+    const foundUserRoles = await db.select('name')
+      .from('roles')
+      .innerJoin('user_roles', 'roles.id', 'user_roles.role_id')
+      .where({ user_id: foundUser.id })
+    return { ...foundUser, roles: foundUserRoles }
+  },
 
   findUserById: async id => {
     const user = await db.select('id', 'username').from('users').where({ id }).first()
