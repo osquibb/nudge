@@ -4,17 +4,13 @@ import userService from '../../services/userService'
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user: {
-      id: null,
-      username: null,
-      roles: [],
-      isAuthenticated: false
-    }
+    id: null,
+    username: null,
+    roles: [],
+    isAuthenticated: false
   },
   reducers: {
-    setUser: (state, { payload }) => {
-      state.user = payload
-    }
+    setUser: (state, { payload }) => Object.assign(state, payload)
   },
 })
 
@@ -31,6 +27,6 @@ export const login = (username, password) => async dispatch => {
   }
 }
 
-export const selectUser = state => state.user.user 
+export const selectUser = state => state.user 
 
 export default userSlice.reducer
