@@ -4,7 +4,6 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import Container from '@material-ui/core/Container'
 import NavBar from './features/navigation/NavBar'
 
 function App() {
@@ -12,14 +11,12 @@ function App() {
     <Router>
       <NavBar />
       <Switch>
-        <Container>
-          <Route exact path="/">
-            <p>Home Route</p>
-          </Route>
-          <Route path="/test">
-            <p>Test Route</p>
-          </Route>
-        </Container>
+        <Route exact path="/">
+          <p>Home Route</p>
+        </Route>
+        <Route path="/test">
+          <p>Test Route</p>
+        </Route>
       </Switch>
     </Router>
   )

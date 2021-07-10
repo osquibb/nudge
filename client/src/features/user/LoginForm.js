@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { login, selectUser } from '../user/userSlice'
+import { login, logout, selectUser } from '../user/userSlice'
 import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -22,28 +22,38 @@ export default function LoginForm() {
 
   return(
     <Container>
-      <TextField
-        value={user.username}
-        label="Username"
-        required
-        onChange={e => onUsernameChange(e.target.value)}
-      />
-      <TextField
-        value={user.password}
-        label="Password"
-        required
-        type="password"
-        onChange={e => onPasswordChange(e.target.value)}
-      />
+      {!authenticatedUser.id && <span>
+        <TextField
+          value={user.username}
+          label="Username"
+          required
+          onChange={e => onUsernameChange(e.target.value)}
+        />
+        <TextField
+          value={user.password}
+          label="Password"
+          required
+          type="password"
+          onChange={e => onPasswordChange(e.target.value)}
+        />
+      </span>}
       <Button
         color="primary"
-        onClick={() => dispatch(login(user.username, user.password))}
+        onClick={() => dispatch(authenticatedUser.id ? logout() : login(user.username, user.password))}
       >
-        Sign In
+        {`Sign ${authenticatedUser.id ? 'Out' : 'In'}`}
       </Button>
-      <p>
-        {authenticatedUser.username && `Current User: ${authenticatedUser.username}`}
-      </p>
+      {authenticatedUser.id && <div>
+        <p>
+          Current User: {authenticatedUser.username}
+        </p>
+        <h4>
+          Roles
+        </h4>
+        <ul>
+          {authenticatedUser.roles?.map(role => <li key={role.name}>{role.name}</li>)}
+        </ul>
+      </div>}
     </Container>
   )
 

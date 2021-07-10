@@ -6,7 +6,7 @@ const userService = {
     return data
   },
     
-  logout: async () => await axios.get('/logout')
+  logout: async () => await axios.get('/auth/logout')
 }
 
 export default userService

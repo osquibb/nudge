@@ -3,10 +3,7 @@ const passport = require('../passport')
 const { isAnonymous } = require('../utils/authUtils')
 
 router.post('/login', passport.authenticate('local'), ({ user }, res) => {
-  res.json({
-    ...user,
-    isAuthenticated: !!user
-  })
+  res.json(user)
 })
 
 router.get('/logout', (req, res) => {
