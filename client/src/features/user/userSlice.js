@@ -16,7 +16,7 @@ export const userSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
+// Action creators are generated for each reducer function
 export const { setUser, resetUser } = userSlice.actions
 
 // Async thunks

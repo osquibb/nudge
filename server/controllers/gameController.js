@@ -8,11 +8,11 @@ const {
     addUserToGameByUserIdAndGameId,
     updateCoordinatesByUserIdAndGameId
 } = require('../services/gameService')
-const { isAdmin, isPlayer } = require('../utils/authUtils')
+const { isAnonymous, isAdmin, isPlayer } = require('../utils/authUtils')
 
 router.get('/', async ({ user }, res) => {
   // auth
-  if (!isAdmin(user)) {
+  if (isAnonymous(user)) {
     res.sendStatus(401)
   }
   // operation
@@ -20,7 +20,7 @@ router.get('/', async ({ user }, res) => {
   res.json({ games })
 })
 
-router.get('/myList', async ({ user }, res) => {
+router.get('/myGames', async ({ user }, res) => {
   // auth
   if (!isPlayer(user)) {
     res.sendStatus(401)
@@ -32,7 +32,7 @@ router.get('/myList', async ({ user }, res) => {
 
 router.get('/:gameId', async ({ user, params }, res) => {
   // auth
-  if (!isAdmin(user)) {
+  if (isAnonymous(user)) {
     res.sendStatus(401)
   }
   // operation
@@ -65,18 +65,13 @@ router.delete('/:gameId', async ({ user, params }, res) => {
   res.sendStatus(200)
 })
 
-router.post('/:gameId/join', async ({ user, params, body }, res) => {
+router.post('/:gameId/join', async ({ user, params }, res) => {
   // auth
   if (!isPlayer(user)) {
     res.sendStatus(401)
   }
   // operation
-  await addUserToGameByUserIdAndGameId(
-    user.id,
-    params.gameId,
-    body.latitude,
-    body.longitude
-  )
+  await addUserToGameByUserIdAndGameId(user.id, params.gameId)
   res.sendStatus(200)
 })
 
