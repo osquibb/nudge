@@ -58,14 +58,14 @@ export default function NavBar(props) {
 
   const [signInModalStyle] = useState(getSignInModalStyle);
 
-  const onSignOut = async () => {
+  const signOut = async () => {
     await dispatch(logout())
     history.push("/")
   }
 
-  const onSignIn = () => setIsSignInModalOpen(true)
+  const signIn = () => setIsSignInModalOpen(true)
 
-  const onCloseSignInModal = () => setIsSignInModalOpen(false)
+  const closeSignInModal = () => setIsSignInModalOpen(false)
 
   return (
     <div className={classes.root}>
@@ -78,7 +78,7 @@ export default function NavBar(props) {
             Nudge
           </Typography>
             <Button
-              onClick={() => authenticatedUser.id ? onSignOut() : onSignIn()}
+              onClick={() => authenticatedUser.id ? signOut() : signIn()}
             >
               {authenticatedUser.id ? 'Sign Out' : 'Sign In'}
             </Button>
@@ -87,10 +87,12 @@ export default function NavBar(props) {
       </AppBar>
       <Modal
         open={isSignInModalOpen}
-        onClose={onCloseSignInModal}
+        onClose={closeSignInModal}
       >
         <div style={signInModalStyle} className={classes.paper}>
-          <LoginForm />
+          <LoginForm
+            onSignIn={closeSignInModal}
+          />
         </div>
       </Modal>
     </div>

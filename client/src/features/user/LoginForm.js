@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../user/userSlice'
 import { Container, TextField, Button } from '@material-ui/core'
 
-export default function LoginForm() {
+export default function LoginForm({ onSignIn }) {
   const dispatch = useDispatch();
 
   const initialUser = { username: '', password: '' }
@@ -17,7 +17,10 @@ export default function LoginForm() {
     ({ ...prevUser, password })
   )
 
-  const onSignIn = () => dispatch(login(user.username, user.password))
+  const signIn = () => {
+    dispatch(login(user.username, user.password))
+    onSignIn()
+  }
 
   return(
     <Container>
@@ -34,7 +37,7 @@ export default function LoginForm() {
         type="password"
         onChange={e => onPasswordChange(e.target.value)}
       />
-      <Button onClick={onSignIn}>
+      <Button onClick={signIn}>
         Sign In
       </Button>
     </Container>
