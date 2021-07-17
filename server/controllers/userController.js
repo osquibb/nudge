@@ -18,7 +18,7 @@ router.post('/', async ({ body }, res) => {
 router.get('/', async ({ user }, res) => {
   // auth
   if (!isAdmin(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   const users = await listUsers()
@@ -28,7 +28,7 @@ router.get('/', async ({ user }, res) => {
 router.post('/:userId/addRole', async ({ user, params, body }, res) => {
   //auth
   if (!isAdmin(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   await addUserRole(params.userId, body.roleId)
@@ -38,7 +38,7 @@ router.post('/:userId/addRole', async ({ user, params, body }, res) => {
 router.delete('/:userId/removeRole', async ({ user, params, body }, res) => {
   //auth
   if (!isAdmin(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   await deleteUserRole(params.userId, body.roleId)

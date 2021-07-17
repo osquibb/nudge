@@ -1,5 +1,5 @@
 module.exports = {
-  isAnonymous: user => !user,
+  isLoggedIn: user => user,
   
   isAdmin: user => user?.roles?.includes('admin'),
 

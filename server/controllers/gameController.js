@@ -8,12 +8,12 @@ const {
     addUserToGameByUserIdAndGameId,
     updateCoordinatesByUserIdAndGameId
 } = require('../services/gameService')
-const { isAnonymous, isAdmin, isPlayer } = require('../utils/authUtils')
+const { isLoggedIn, isAdmin, isPlayer } = require('../utils/authUtils')
 
 router.get('/', async ({ user }, res) => {
   // auth
-  if (isAnonymous(user)) {
-    res.sendStatus(401)
+  if (!isLoggedIn(user)) {
+    return res.sendStatus(401)
   }
   // operation
   const games = await listGames()
@@ -23,7 +23,7 @@ router.get('/', async ({ user }, res) => {
 router.get('/myGames', async ({ user }, res) => {
   // auth
   if (!isPlayer(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   const games = await listGamesByUserId(user.id)
@@ -32,8 +32,8 @@ router.get('/myGames', async ({ user }, res) => {
 
 router.get('/:gameId', async ({ user, params }, res) => {
   // auth
-  if (isAnonymous(user)) {
-    res.sendStatus(401)
+  if (!isLoggedIn(user)) {
+    return res.sendStatus(401)
   }
   // operation
   const game = await findGameById(params.gameId)
@@ -43,7 +43,7 @@ router.get('/:gameId', async ({ user, params }, res) => {
 router.post('/', async ({ user, body }, res) => {
   // auth
   if (!isAdmin(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   const id = await addGame(
@@ -58,7 +58,7 @@ router.post('/', async ({ user, body }, res) => {
 router.delete('/:gameId', async ({ user, params }, res) => {
   // auth
   if (!isAdmin(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   await deleteGameById(params.gameId)
@@ -68,7 +68,7 @@ router.delete('/:gameId', async ({ user, params }, res) => {
 router.post('/:gameId/join', async ({ user, params }, res) => {
   // auth
   if (!isPlayer(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   await addUserToGameByUserIdAndGameId(user.id, params.gameId)
@@ -78,7 +78,7 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
 router.post('/:gameId/updateCoordinates', async ({ user, params, body }, res) => {
   // auth
   if (!isPlayer(user)) {
-    res.sendStatus(401)
+    return res.sendStatus(401)
   }
   // operation
   const coordinates = await updateCoordinatesByUserIdAndGameId(
