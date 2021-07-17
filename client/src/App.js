@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import { Container } from '@material-ui/core';
 import NavBar from './features/navigation/NavBar'
+import GamesList from './features/game/GamesList';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
           <Container>
             <p>Home Route</p>
           </Container>
+        </Route>
+        <Route exact path="/games">
+          <GamesList />
         </Route>
       </Switch>
     </Router>

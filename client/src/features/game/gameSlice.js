@@ -21,7 +21,7 @@ export const { setGames, setMyGames, setGame } = gameSlice.actions
 // Async thunks
 export const getGames = () => async dispatch => {
   try {
-    const games = await gameService.getGames()
+    const { games } = await gameService.getGames()
     dispatch(setGames(games))
   } catch (e) {
     console.error(e)
@@ -46,8 +46,8 @@ export const getGame = gameId => async dispatch => {
   }
 }
 
-export const selectGames = state => state.games
-export const selectMyGames = state => state.myGames
-export const selectGame = state => state.game
+export const selectGames = state => state.game.games
+export const selectMyGames = state => state.game.myGames
+export const selectGame = state => state.game.game
 
 export default gameSlice.reducer
