@@ -4,6 +4,8 @@ exports.seed = function(knex) {
   return knex('roles').del()
     .then(function () {
       // Inserts seed entries
-      return knex('roles').insert({ name: 'player' });
+      return knex('roles').insert(
+        [{ name: 'admin' }, { name: 'player' }]
+      );
     });
 };
