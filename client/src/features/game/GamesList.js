@@ -15,7 +15,7 @@ export default function GamesList(props) {
     <Container>
       <h2>Games List</h2>
       <ul>
-        {games.map(game => <li>{game.title}</li>)}
+        {games.map(game => <li key={game.id}>{game.title}</li>)}
       </ul>
     </Container>
   )

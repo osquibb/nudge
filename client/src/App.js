@@ -1,4 +1,7 @@
 import './App.css'
+import { React, useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { getUser } from './features/user/userSlice'
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,6 +12,9 @@ import NavBar from './features/navigation/NavBar'
 import GamesList from './features/game/GamesList';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(getUser()), [dispatch])
+
   return (
     <Router>
       <NavBar />

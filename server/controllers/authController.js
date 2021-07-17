@@ -14,15 +14,11 @@ router.get('/logout', (req, res) => {
   res.sendStatus(200)
 })
 
-router.get('/status', ({ user, session }, res) => {
+router.get('/user', ({ user }, res) => {
   if (!isLoggedIn(user)) {
     return res.sendStatus(401)
   }
-  res.json({
-    isAuthenticated: !!user,
-    user,
-    sessionId: !!user ? session?.id : undefined
-  })
+  res.json(user)
 })
 
 module.exports = router

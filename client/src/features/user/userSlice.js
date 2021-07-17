@@ -29,6 +29,15 @@ export const login = (username, password) => async dispatch => {
   }
 }
 
+export const getUser = () => async dispatch => {
+  try {
+    const user = await userService.getUser()
+    dispatch(setUser(user))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const logout = () => async dispatch => {
   try {
     await userService.logout()
