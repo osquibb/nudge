@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
-  return  knex.schema.dropTableIfExists('coordinates')
-  .createTable('coordinates', table => {
+  return  knex.schema.dropTableIfExists('user_games')
+  .createTable('user_games', table => {
     table.uuid('user_id').notNullable()
     table.uuid('game_id').notNullable()
     table.foreign('user_id')
@@ -22,5 +22,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return  knex.schema.dropTableIfExists('coordinates')
+  return  knex.schema.dropTableIfExists('user_games')
 };

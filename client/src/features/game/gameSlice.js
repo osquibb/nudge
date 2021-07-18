@@ -46,6 +46,15 @@ export const getGame = gameId => async dispatch => {
   }
 }
 
+export const joinGame = gameId => async dispatch => {
+  try {
+    const { games } = await gameService.joinGameById(gameId)
+    dispatch(setGames(games))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const selectGames = state => state.game.games
 export const selectMyGames = state => state.game.myGames
 export const selectGame = state => state.game.game

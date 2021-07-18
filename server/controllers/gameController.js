@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {
     listGames,
+    listGamesAndJoinedStatusByUserId,
     listGamesByUserId,
     findGameById,
     addGame,
@@ -16,7 +17,7 @@ router.get('/', async ({ user }, res) => {
     return res.sendStatus(401)
   }
   // operation
-  const games = await listGames()
+  const games = await listGamesAndJoinedStatusByUserId(user.id)
   res.json({ games })
 })
 
@@ -72,7 +73,8 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
   }
   // operation
   await addUserToGameByUserIdAndGameId(user.id, params.gameId)
-  res.sendStatus(200)
+  const games = await listGamesAndJoinedStatusByUserId(user.id)
+  res.json({ games })
 })
 
 router.post('/:gameId/updateCoordinates', async ({ user, params, body }, res) => {

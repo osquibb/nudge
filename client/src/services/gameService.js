@@ -13,7 +13,10 @@ const gameService = {
     const { data: game } = await axios.get(`/games/${gameId}`)
     return game
   },
-  joinGameById: async gameId => await axios.post(`/games/${gameId}/join`),
+  joinGameById: async gameId => {
+    const { data: games } = await axios.post(`/games/${gameId}/join`)
+    return games
+  },
   updateCoordinates: async (gameId, latitude, longitude) => {
     const { data: coordinates } = await axios.post(`/games/${gameId}/updateCoordinates`, { latitude, longitude })
     return coordinates
