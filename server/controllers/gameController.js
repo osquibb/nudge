@@ -7,7 +7,7 @@ const {
     addGame,
     deleteGameById,
     addUserToGameByUserIdAndGameId,
-    updateCoordinatesByUserIdAndGameId
+    nudge
 } = require('../services/gameService')
 const { isLoggedIn, isAdmin, isPlayer } = require('../utils/authUtils')
 
@@ -48,7 +48,7 @@ router.post('/', async ({ user, body }, res) => {
   }
   // operation
   const id = await addGame(
-    { 
+    {
       title: body.title,
       expiration: body.expiration
     }
@@ -77,19 +77,19 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
   res.json({ games })
 })
 
-router.post('/:gameId/updateCoordinates', async ({ user, params, body }, res) => {
+router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
   // auth
   if (!isPlayer(user)) {
     return res.sendStatus(401)
   }
   // operation
-  const coordinates = await updateCoordinatesByUserIdAndGameId(
+  const resp = await nudge(
     user.id,
     params.gameId,
     body.latitude,
     body.longitude
   )
-  res.json(coordinates)
+  res.json(resp)
 })
 
 module.exports = router
