@@ -11,19 +11,12 @@ export const gameSlice = createSlice({
   },
   reducers: {
     setGames: (state, { payload: games }) => ({ ...state, games}),
-    setMyGames: (state, { payload: myGames }) => ({ ...state, myGames }),
-    setGame: (state, { payload: game }) => ({ ...state, game })
-  },
+    setMyGames: (state, { payload: myGames }) => ({ ...state, myGames })
+  }
 })
 
 // Action creators are generated for each reducer function
 export const { setGames, setMyGames, setGame } = gameSlice.actions
-
-export const setGameById = gameId => async (dispatch, getState) => {
-  const { game: { games } } = getState()
-  const game = find(g => g.id === gameId, games)
-  dispatch(setGame(game))
-}
 
 // Async thunks
 export const getGames = () => async dispatch => {
@@ -54,6 +47,6 @@ export const joinGame = gameId => async dispatch => {
 }
 
 export const selectGames = state => state.game.games
-export const selectGame = state => state.game.game
+export const selectGameById = id => state => find(g => g.id === id, state.game.games)
 
 export default gameSlice.reducer

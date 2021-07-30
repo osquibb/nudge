@@ -1,15 +1,11 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectGame, setGameById } from '../game/gameSlice'
+import { useSelector } from 'react-redux'
+import { selectGameById } from '../game/gameSlice'
 
 export default function GameDetails() {
 
-  const dispatch = useDispatch();
   const { id } = useParams()
-  const game = useSelector(selectGame)
-
-  useEffect(() => dispatch(setGameById(id)), [id, dispatch])
+  const game = useSelector(selectGameById(id))
 
   return (
     <div>
