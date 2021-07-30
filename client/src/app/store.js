@@ -5,6 +5,6 @@ import gameReducer from '../features/game/gameSlice'
 export default configureStore({
   reducer: {
     user: userReducer,
-    game: gameReducer
+    games: gameReducer
   },
 })

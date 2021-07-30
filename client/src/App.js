@@ -28,6 +28,9 @@ function App() {
         <Route exact path="/games">
           <GameList />
         </Route>
+        <Route path="/myGames">
+          <GameList joinedOnly />
+        </Route>
         <Route path="/games/:id">
           <GameDetails />
         </Route>

@@ -1,20 +1,21 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectGames, getGames } from '../game/gameSlice'
+import { selectGames, selectJoinedGames, getGames } from '../game/gameSlice'
 import { Container, Grid } from '@material-ui/core'
 import GameCard from './GameCard'
 
-export default function GamesList() {
+export default function GameList({ joinedOnly }) {
 
   let history = useHistory()
 
   const dispatch = useDispatch()
-  const games = useSelector(selectGames)
+  const allGames = useSelector(selectGames)
+  const joinedGames = useSelector(selectJoinedGames)
 
   useEffect(() => dispatch(getGames()), [dispatch])
 
-  const onGameClick = gameId => {
+  const goToGame = gameId => {
     history.push(`/games/${gameId}`)
   }
 
@@ -22,9 +23,9 @@ export default function GamesList() {
     <Container>
       <h2>Games List</h2>
       <Grid container spacing={3}>
-        {games?.map(game =>
+        {(joinedOnly ? joinedGames : allGames)?.map(game =>
           <Grid item key={game.id}>
-            <GameCard game={game} onClick={() => onGameClick(game.id)} />
+            <GameCard game={game} onClick={() => goToGame(game.id)} />
           </Grid>
         )}
       </Grid>
