@@ -4,7 +4,7 @@ module.exports = {
   listGames: async () => await db('games').select(),
 
   listGamesAndJoinedStatusByUserId: async user_id => {
-  const resultSet = await db.raw('SELECT id, title, expiration, user_id IS NOT NULL as is_joined FROM games LEFT OUTER JOIN user_games ON games.id = user_games.game_id WHERE user_id IS NULL OR user_id = ?', [user_id])
+  const resultSet = await db.raw('SELECT id, title, latitude, longitude, expiration, user_id IS NOT NULL as is_joined FROM games LEFT OUTER JOIN user_games ON games.id = user_games.game_id WHERE user_id IS NULL OR user_id = ?', [user_id])
   return resultSet.rows
   },
 
