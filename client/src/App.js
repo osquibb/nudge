@@ -7,12 +7,13 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import { Container } from '@material-ui/core';
+import { Container } from '@material-ui/core'
 import NavBar from './features/navigation/NavBar'
-import GamesList from './features/game/GamesList';
+import GameList from './features/game/GameList'
+import GameDetails from './features/game/GameDetails'
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   useEffect(() => dispatch(getUser()), [dispatch])
 
   return (
@@ -25,7 +26,10 @@ function App() {
           </Container>
         </Route>
         <Route exact path="/games">
-          <GamesList />
+          <GameList />
+        </Route>
+        <Route path="/games/:id">
+          <GameDetails />
         </Route>
       </Switch>
     </Router>

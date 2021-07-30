@@ -1,3 +1,4 @@
+import { find } from 'ramda'
 import { createSlice } from '@reduxjs/toolkit'
 import gameService from '../../services/gameService'
 
@@ -9,14 +10,20 @@ export const gameSlice = createSlice({
     game: {}
   },
   reducers: {
-    setGames: (state, { payload }) => { state.games = payload },
-    setMyGames: (state, { payload }) => { state.myGames = payload },
-    setGame: (state, { payload }) => { state.game = payload }
+    setGames: (state, { payload: games }) => ({ ...state, games}),
+    setMyGames: (state, { payload: myGames }) => ({ ...state, myGames }),
+    setGame: (state, { payload: game }) => ({ ...state, game })
   },
 })
 
 // Action creators are generated for each reducer function
 export const { setGames, setMyGames, setGame } = gameSlice.actions
+
+export const setGameById = gameId => async (dispatch, getState) => {
+  const { game: { games } } = getState()
+  const game = find(g => g.id === gameId, games)
+  dispatch(setGame(game))
+}
 
 // Async thunks
 export const getGames = () => async dispatch => {
@@ -37,15 +44,6 @@ export const getMyGames = () => async dispatch => {
   }
 }
 
-export const getGame = gameId => async dispatch => {
-  try {
-    const game = await gameService.getGameById(gameId)
-    dispatch(setGame(game))
-  } catch (e) {
-    console.error(e)
-  }
-}
-
 export const joinGame = gameId => async dispatch => {
   try {
     const { games } = await gameService.joinGameById(gameId)
@@ -56,7 +54,6 @@ export const joinGame = gameId => async dispatch => {
 }
 
 export const selectGames = state => state.game.games
-export const selectMyGames = state => state.game.myGames
 export const selectGame = state => state.game.game
 
 export default gameSlice.reducer

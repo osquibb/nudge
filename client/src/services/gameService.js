@@ -17,10 +17,6 @@ const gameService = {
     const { data: games } = await axios.post(`/games/${gameId}/join`)
     return games
   },
-  updateCoordinates: async (gameId, latitude, longitude) => {
-    const { data: coordinates } = await axios.post(`/games/${gameId}/updateCoordinates`, { latitude, longitude })
-    return coordinates
-  }
 }
 
 export default gameService

@@ -1,9 +1,9 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
   CardHeader,
+  CardActionArea,
   CardContent,
   CardActions,
   IconButton,
@@ -13,7 +13,7 @@ import { Add } from '@material-ui/icons'
 import { blue } from '@material-ui/core/colors'
 import { joinGame } from '../game/gameSlice'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: 300,
     height: 300,
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function GameCard({ game }) {
+export default function GameCard({ game, onClick }) {
 
   const classes = useStyles()
   const dispatch = useDispatch();
@@ -29,18 +29,20 @@ export default function GameCard({ game }) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        title={game.title}
-        subheader={game.is_joined ? 'Already Joined' : ''}
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Map here..
-        </Typography>
-      </CardContent>
+      <CardActionArea onClick={onClick}>
+        <CardHeader
+          title={game.title}
+          subheader={game.is_joined ? 'Already Joined' : ''}
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Map here..
+          </Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions disableSpacing>
-        <IconButton aria-label="add">
-          <Add onClick={() => onJoin(game.id)} />
+        <IconButton aria-label="add" onClick={() => onJoin(game.id)}>
+          <Add />
         </IconButton>
       </CardActions>
     </Card>
