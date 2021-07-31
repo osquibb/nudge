@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import useInterval from '../../hooks/useInterval.js'
 import { selectGameById, getGameById } from '../game/gameSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -22,11 +22,12 @@ export default function GameDetails() {
   const { id } = useParams()
   const game = useSelector(selectGameById(id))
 
-  useEffect(() => dispatch(getGameById(id)), [dispatch, id])
+  useInterval(() => dispatch(getGameById(id)), 3000)
 
   return (
     <div>
       <h2>{game ? game.title : 'No Game Found'}</h2>
+      <i>Last updated: {game.fetched_at}</i>
       <MapContainer style={{ height: 400, width: 600 }} center={[game.latitude, game.longitude]} zoom={12} scrollWheelZoom={false}>
         <TileLayer
           attribution='&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
