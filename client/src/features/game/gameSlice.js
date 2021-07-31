@@ -1,4 +1,4 @@
-import { find, filter } from 'ramda'
+import { map, find, filter } from 'ramda'
 import { createSlice } from '@reduxjs/toolkit'
 import gameService from '../../services/gameService'
 
@@ -6,18 +6,34 @@ export const gameSlice = createSlice({
   name: 'games',
   initialState: [],
   reducers: {
-    setGames: (state, { payload: games }) => games,
+    setGames: (state, { payload: games }) => games
   }
 })
 
 // Action creators are generated for each reducer function
-export const { setGames } = gameSlice.actions
+const { setGames } = gameSlice.actions
 
 // Async thunks
 export const getGames = () => async dispatch => {
   try {
     const { games } = await gameService.getGames()
-    dispatch(setGames(games))
+    const fetched_at = new Date().toJSON()
+    dispatch(setGames(map(g => ({ ...g, fetched_at }), games)))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export const getGameById = gameId => async (dispatch, getState) => {
+  try {
+    const game = await gameService.getGameById(gameId)
+    const fetched_at = new Date().toJSON()
+    const { games } = getState()
+    dispatch(setGames(map(g => g.id === game.id
+      ? ({ ...game, fetched_at })
+      : g,
+      games)
+    ))
   } catch (e) {
     console.error(e)
   }
@@ -26,7 +42,8 @@ export const getGames = () => async dispatch => {
 export const joinGame = gameId => async dispatch => {
   try {
     const { games } = await gameService.joinGameById(gameId)
-    dispatch(setGames(games))
+    const fetched_at = new Date().toJSON()
+    dispatch(setGames(map(g => ({ ...g, fetched_at }), games)))
   } catch (e) {
     console.error(e)
   }

@@ -3,7 +3,7 @@ const {
     listGames,
     listGamesAndJoinedStatusByUserId,
     listGamesByUserId,
-    findGameById,
+    findGameAndJoinedStatusByGameIdAndUserId,
     addGame,
     deleteGameById,
     addUserToGameByUserIdAndGameId,
@@ -37,7 +37,7 @@ router.get('/:gameId', async ({ user, params }, res) => {
     return res.sendStatus(401)
   }
   // operation
-  const game = await findGameById(params.gameId)
+  const game = await findGameAndJoinedStatusByGameIdAndUserId(params.gameId, user.id)
   res.json(game)
 })
 

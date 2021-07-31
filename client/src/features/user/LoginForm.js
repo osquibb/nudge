@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import { login } from '../user/userSlice'
 import { Container, TextField, Button } from '@material-ui/core'
 
 export default function LoginForm({ onSignIn }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const initialUser = { username: '', password: '' }
   const [user, setUser] = useState(initialUser)
 
-  const onUsernameChange = username => setUser(prevUser => 
+  const onUsernameChange = username => setUser(prevUser =>
     ({ ...prevUser, username })
   )
 

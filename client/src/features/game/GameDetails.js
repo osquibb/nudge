@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectGameById } from '../game/gameSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectGameById, getGameById } from '../game/gameSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -16,8 +17,12 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function GameDetails() {
 
+  const dispatch = useDispatch()
+
   const { id } = useParams()
   const game = useSelector(selectGameById(id))
+
+  useEffect(() => dispatch(getGameById(id)), [dispatch, id])
 
   return (
     <div>

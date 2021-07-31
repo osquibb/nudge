@@ -11,7 +11,10 @@ module.exports = {
   listGamesByUserId : async user_id =>
     await db('games').innerJoin('user_games', 'games.id', 'user_games.game_id').where({ user_id }),
 
-  findGameById: async id => await db('games').where('id', id).first(),
+  findGameAndJoinedStatusByGameIdAndUserId: async (game_id, user_id) => {
+    const resultSet = await db.raw('SELECT id, title, latitude, longitude, expiration, user_id IS NOT NULL as is_joined FROM games LEFT OUTER JOIN user_games ON games.id = user_games.game_id WHERE id = ? AND (user_id IS NULL OR user_id = ?)', [game_id, user_id])
+    return resultSet.rows[0]
+  },
 
   addGame: async ({ title, expiration = null }) => {
     const resultSet = await db('games').insert({ title, expiration }).returning('id')

@@ -11,13 +11,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, { payload }) => Object.assign(state, payload),
-    resetUser: (state, action) => Object.assign(state, initialState)
+    setUser: (state, { payload: user }) => user,
+    resetUser: () => initialState
   },
 })
 
 // Action creators are generated for each reducer function
-export const { setUser, resetUser } = userSlice.actions
+const { setUser, resetUser } = userSlice.actions
 
 // Async thunks
 export const login = (username, password) => async dispatch => {
@@ -47,6 +47,6 @@ export const logout = () => async dispatch => {
   }
 }
 
-export const selectUser = state => state.user 
+export const selectUser = state => state.user
 
 export default userSlice.reducer
