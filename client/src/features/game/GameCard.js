@@ -8,7 +8,7 @@ import {
   CardActions,
   IconButton,
   Typography,
-} from "@material-ui/core"
+} from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { blue } from '@material-ui/core/colors'
 import { joinGame } from '../game/gameSlice'

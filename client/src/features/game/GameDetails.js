@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import useInterval from '../../hooks/useInterval.js'
-import { selectGameById, getGameById } from '../game/gameSlice'
+import { selectGameById, getGameById, nudge } from '../game/gameSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { IconButton } from '@material-ui/core'
+import { ArrowDownward, ArrowUpward, ArrowBack, ArrowForward } from '@material-ui/icons'
 import 'leaflet/dist/leaflet.css'
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -24,6 +26,8 @@ export default function GameDetails() {
 
   useInterval(() => dispatch(getGameById(id)), 3000)
 
+  const onNudge = direction => dispatch(nudge(id, direction))
+
   return (
     <div>
       <h2>{game ? game.title : 'No Game Found'}</h2>
@@ -35,10 +39,25 @@ export default function GameDetails() {
         />
         <Marker position={[game.latitude, game.longitude]}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            Nudge me!
           </Popup>
         </Marker>
       </MapContainer>
+      { game.is_joined &&
+      <div>
+        <IconButton aria-label="up" onClick={() => onNudge('NORTH')}>
+          <ArrowUpward/>
+        </IconButton>
+        <IconButton aria-label="down" onClick={() => onNudge('SOUTH')}>
+          <ArrowDownward/>
+        </IconButton>
+        <IconButton aria-label="east" onClick={() => onNudge('EAST')}>
+          <ArrowForward/>
+        </IconButton>
+        <IconButton aria-label="west" onClick={() => onNudge('WEST')}>
+          <ArrowBack/>
+        </IconButton>
+      </div>}
     </div>
   )
 }

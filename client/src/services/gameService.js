@@ -13,6 +13,10 @@ const gameService = {
     const { data: games } = await axios.post(`/games/${gameId}/join`)
     return games
   },
+  nudge: async (gameId, direction) => {
+    const { data: games } = await axios.post(`/games/${gameId}/nudge`, { direction })
+    return games
+  },
 }
 
 export default gameService

@@ -86,8 +86,7 @@ router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
   const resp = await nudge(
     user.id,
     params.gameId,
-    body.latitude,
-    body.longitude
+    body.direction
   )
   res.json(resp)
 })

@@ -26,10 +26,28 @@ module.exports = {
   addUserToGameByUserIdAndGameId: async (user_id, game_id) =>
     await db('user_games').insert({ user_id, game_id }),
 
-  nudge: async (user_id, game_id, latitude, longitude) =>
+  nudge: async (user_id, game_id, direction) =>
     await db.transaction(async trx => {
+      let { latitude, longitude } = await trx.select('latitude', 'longitude').from('games').where({ id: game_id }).first()
+      latitude = parseFloat(latitude)
+      longitude = parseFloat(longitude)
+      switch (direction) {
+        case 'NORTH':
+          latitude += 0.01
+          break
+        case 'SOUTH':
+          latitude -= 0.01
+          break
+        case 'EAST':
+          longitude += 0.01
+          break
+        case 'WEST':
+          longitude -= 0.01
+          break
+      }
       await trx('games').where({ id: game_id }).update({ latitude, longitude })
-      const resultSet =  await trx('user_games').where({ user_id, game_id }).update({ last_nudge_at: new Date() }).returning(['game_id', 'user_id', 'last_nudge_at'])
-      return resultSet[0]
+      await trx('user_games').where({ user_id, game_id }).update({ last_nudge_at: new Date() }).returning(['game_id', 'user_id', 'last_nudge_at'])
+      const resultSet = await trx.raw('SELECT id, title, latitude, longitude, expiration, user_id IS NOT NULL as is_joined FROM games LEFT OUTER JOIN user_games ON games.id = user_games.game_id WHERE id = ? AND (user_id IS NULL OR user_id = ?)', [game_id, user_id])
+      return resultSet.rows[0]
     })
 }

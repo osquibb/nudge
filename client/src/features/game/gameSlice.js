@@ -49,6 +49,21 @@ export const joinGame = gameId => async dispatch => {
   }
 }
 
+export const nudge = (gameId, direction) => async (dispatch, getState) => {
+  try {
+    const game = await gameService.nudge(gameId, direction)
+    const fetched_at = new Date().toJSON()
+    const { games } = getState()
+    dispatch(setGames(map(g => g.id === game.id
+      ? ({ ...game, fetched_at })
+      : g,
+      games)
+    ))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const selectGames = state => state.games
 export const selectGameById = id => state => find(g => g.id === id, state.games)
 export const selectJoinedGames = state => filter(g => g.is_joined, state.games)
