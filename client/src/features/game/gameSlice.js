@@ -51,11 +51,11 @@ export const joinGame = gameId => async dispatch => {
 
 export const nudge = (gameId, direction) => async (dispatch, getState) => {
   try {
-    const game = await gameService.nudge(gameId, direction)
+    const { game: { id, latitude, longitude }, last_nudge_at } = await gameService.nudge(gameId, direction)
     const fetched_at = new Date().toJSON()
     const { games } = getState()
-    dispatch(setGames(map(g => g.id === game.id
-      ? ({ ...game, fetched_at })
+    dispatch(setGames(map(g => g.id === id
+      ? ({ ...g, latitude, longitude, last_nudge_at, fetched_at })
       : g,
       games)
     ))

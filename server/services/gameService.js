@@ -12,6 +12,7 @@ module.exports = {
         latitude,
         longitude,
         expiration,
+        last_nudge_at,
         user_id IS NOT NULL as is_joined
       FROM
         games
@@ -39,6 +40,7 @@ module.exports = {
         latitude,
         longitude,
         expiration,
+        last_nudge_at,
         user_id IS NOT NULL as is_joined
       FROM
         games
@@ -83,28 +85,8 @@ module.exports = {
           longitude -= 0.01
           break
       }
-      await trx('games').where({ id: game_id }).update({ latitude, longitude })
-      await trx('user_games').where({ user_id, game_id }).update({ last_nudge_at: new Date() }).returning(['game_id', 'user_id', 'last_nudge_at'])
-      const resultSet = await trx.raw(
-        `
-        SELECT
-          id,
-          title,
-          latitude,
-          longitude,
-          expiration,
-          user_id IS NOT NULL as is_joined
-        FROM
-          games
-        LEFT OUTER JOIN
-          user_games
-        ON
-          games.id = user_games.game_id
-        WHERE
-          id = ? AND (user_id IS NULL OR user_id = ?)
-        `,
-        [game_id, user_id]
-      )
-      return resultSet.rows[0]
+      const gameResultSet = await trx('games').where({ id: game_id }).update({ latitude, longitude }, ['id', 'latitude', 'longitude'])
+      const lastNudgeResultSet = await trx('user_games').where({ user_id, game_id }).update({ last_nudge_at: new Date() }).returning(['last_nudge_at'])
+      return { game: gameResultSet[0], last_nudge_at: lastNudgeResultSet[0].last_nudge_at }
     })
 }
