@@ -1,7 +1,8 @@
+const tableName = 'user_games'
 
-exports.up = function(knex) {
-  return  knex.schema.dropTableIfExists('user_games')
-  .createTable('user_games', table => {
+exports.up = async function(knex) {
+  await knex.schema.dropTableIfExists(tableName)
+  .createTable(tableName, table => {
     table.uuid('user_id').notNullable()
     table.uuid('game_id').notNullable()
     table.foreign('user_id')
@@ -18,8 +19,15 @@ exports.up = function(knex) {
     table.timestamps(true, true)
     table.primary(['user_id', 'game_id'])
   })
+  await await knex.raw(`
+    CREATE TRIGGER update_timestamp
+    BEFORE UPDATE
+    ON ${tableName}
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_timestamp();
+  `)
 };
 
 exports.down = function(knex) {
-  return  knex.schema.dropTableIfExists('user_games')
+  return  knex.schema.dropTableIfExists(tableName)
 };
