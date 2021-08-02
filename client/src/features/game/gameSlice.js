@@ -17,8 +17,7 @@ const { setGames } = gameSlice.actions
 export const getGames = () => async dispatch => {
   try {
     const { games } = await gameService.getGames()
-    const fetched_at = new Date().toJSON()
-    dispatch(setGames(map(g => ({ ...g, fetched_at }), games)))
+    dispatch(setGames(games))
   } catch (e) {
     console.error(e)
   }
@@ -27,10 +26,9 @@ export const getGames = () => async dispatch => {
 export const getGameById = gameId => async (dispatch, getState) => {
   try {
     const game = await gameService.getGameById(gameId)
-    const fetched_at = new Date().toJSON()
     const { games } = getState()
     dispatch(setGames(map(g => g.id === game.id
-      ? ({ ...game, fetched_at })
+      ? game
       : g,
       games)
     ))
@@ -42,8 +40,7 @@ export const getGameById = gameId => async (dispatch, getState) => {
 export const joinGame = gameId => async dispatch => {
   try {
     const { games } = await gameService.joinGameById(gameId)
-    const fetched_at = new Date().toJSON()
-    dispatch(setGames(map(g => ({ ...g, fetched_at }), games)))
+    dispatch(setGames(games))
   } catch (e) {
     console.error(e)
   }
@@ -51,11 +48,10 @@ export const joinGame = gameId => async dispatch => {
 
 export const nudge = (gameId, direction) => async (dispatch, getState) => {
   try {
-    const { game: { id, latitude, longitude }, last_nudge_at } = await gameService.nudge(gameId, direction)
-    const fetched_at = new Date().toJSON()
+    const { game: { id, latitude, longitude, updated_at }, last_nudge_at } = await gameService.nudge(gameId, direction)
     const { games } = getState()
     dispatch(setGames(map(g => g.id === id
-      ? ({ ...g, latitude, longitude, last_nudge_at, fetched_at })
+      ? ({ ...g, latitude, longitude, updated_at, last_nudge_at })
       : g,
       games)
     ))

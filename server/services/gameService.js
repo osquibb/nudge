@@ -12,6 +12,7 @@ module.exports = {
         latitude,
         longitude,
         expiration,
+        games.updated_at,
         last_nudge_at,
         user_id IS NOT NULL as is_joined
       FROM
@@ -28,9 +29,6 @@ module.exports = {
     return resultSet.rows
   },
 
-  listGamesByUserId : async user_id =>
-    await db('games').innerJoin('user_games', 'games.id', 'user_games.game_id').where({ user_id }),
-
   findGameAndJoinedStatusByGameIdAndUserId: async (game_id, user_id) => {
     const resultSet = await db.raw(
       `
@@ -40,6 +38,7 @@ module.exports = {
         latitude,
         longitude,
         expiration,
+        games.updated_at,
         last_nudge_at,
         user_id IS NOT NULL as is_joined
       FROM
@@ -85,7 +84,7 @@ module.exports = {
           longitude -= 0.01
           break
       }
-      const gameResultSet = await trx('games').where({ id: game_id }).update({ latitude, longitude }, ['id', 'latitude', 'longitude'])
+      const gameResultSet = await trx('games').where({ id: game_id }).update({ latitude, longitude }, ['id', 'latitude', 'longitude', 'updated_at'])
       const lastNudgeResultSet = await trx('user_games').where({ user_id, game_id }).update({ last_nudge_at: new Date() }).returning(['last_nudge_at'])
       return { game: gameResultSet[0], last_nudge_at: lastNudgeResultSet[0].last_nudge_at }
     })

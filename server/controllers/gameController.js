@@ -2,7 +2,6 @@ const router = require('express').Router()
 const {
     listGames,
     listGamesAndJoinedStatusByUserId,
-    listGamesByUserId,
     findGameAndJoinedStatusByGameIdAndUserId,
     addGame,
     deleteGameById,
@@ -19,16 +18,6 @@ router.get('/', async ({ user }, res) => {
   // operation
   const games = await listGamesAndJoinedStatusByUserId(user.id)
   res.json({ games })
-})
-
-router.get('/myGames', async ({ user }, res) => {
-  // auth
-  if (!isPlayer(user)) {
-    return res.sendStatus(401)
-  }
-  // operation
-  const games = await listGamesByUserId(user.id)
-  res.json(games)
 })
 
 router.get('/:gameId', async ({ user, params }, res) => {
@@ -83,6 +72,10 @@ router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
     return res.sendStatus(401)
   }
   // operation
+  const game = await findGameAndJoinedStatusByGameIdAndUserId(params.gameId, user.id)
+  if (!game.is_joined) {
+    return res.sendStatus(401)
+  }
   const resp = await nudge(
     user.id,
     params.gameId,

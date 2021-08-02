@@ -31,7 +31,7 @@ export default function GameDetails() {
   return (
     <div>
       <h2>{game ? game.title : 'No Game Found'}</h2>
-      <i>Last updated: {game.fetched_at}</i>
+      <i>Last updated: {game.updated_at}</i>
       <MapContainer style={{ height: 400, width: 600 }} center={[game.latitude, game.longitude]} zoom={12} scrollWheelZoom={false}>
         <TileLayer
           attribution='&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
