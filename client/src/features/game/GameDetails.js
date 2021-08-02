@@ -1,7 +1,7 @@
+import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import useInterval from '../../hooks/useInterval.js'
-import { selectGameById, getGameById, nudge } from '../game/gameSlice'
+import { selectGameById, nudge } from '../game/gameSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IconButton } from '@material-ui/core'
@@ -22,9 +22,25 @@ export default function GameDetails() {
   const dispatch = useDispatch()
 
   const { id } = useParams()
+  const ws = useRef(null)
   const game = useSelector(selectGameById(id))
 
-  useInterval(() => dispatch(getGameById(id)), 3000)
+  useEffect(() => {
+    ws.current = new WebSocket(`ws://localhost:5000/games/${id}`)
+    ws.current.onopen = () => console.log(`ws opened for ${id}`)
+    ws.current.onclose = () => console.log(`ws closed for ${id}`)
+
+    return () => ws.current.close()
+  }, [id])
+
+  useEffect(() => {
+    if (!ws.current) return
+
+    ws.current.onmessage = e => {
+      const message = JSON.parse(e.data)
+      console.log(message)
+    }
+  }, [])
 
   const onNudge = direction => dispatch(nudge(id, direction))
 
