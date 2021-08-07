@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {
     listGames,
+    findGameById,
     listGamesAndJoinedStatusByUserId,
     findGameAndJoinedStatusByGameIdAndUserId,
     addGame,
@@ -66,7 +67,8 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
   res.json({ games })
 })
 
-router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
+router.post('/:gameId/nudge', async ({ user, params, body, app }, res) => {
+
   // auth
   if (!isPlayer(user)) {
     return res.sendStatus(401)
@@ -81,6 +83,12 @@ router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
     params.gameId,
     body.direction
   )
+  // send nudged game via WebSocket
+  app.ws(`/games/${params.gameId}`, async ws => {
+    const game = await findGameById(params.gameId)
+    ws.send(JSON.stringify(game))
+  })
+
   res.json(resp)
 })
 

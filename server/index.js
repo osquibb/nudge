@@ -5,7 +5,6 @@ const ws = require('express-ws')
 const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
 const gameController = require('./controllers/gameController')
-const { gameWebSocket } = require('./websockets')
 
 const app = express()
 
@@ -21,8 +20,6 @@ app.use(passport.session())
 app.use('/auth', authController)
 app.use('/users', userController)
 app.use('/games', gameController)
-
-app.ws('/games/:gameId', gameWebSocket)
 
 const port = process.env.PORT || 5000
 

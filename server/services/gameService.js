@@ -55,6 +55,8 @@ module.exports = {
     return resultSet.rows[0]
   },
 
+  findGameById: async id => await db('games').where({ id }).first(),
+
   addGame: async ({ title, expiration = null }) => {
     const resultSet = await db('games').insert({ title, expiration }).returning('id')
     return resultSet[0]
