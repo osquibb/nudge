@@ -12,17 +12,14 @@ module.exports = {
         latitude,
         longitude,
         expiration,
-        games.updated_at,
-        last_nudge_at,
-        user_id IS NOT NULL as is_joined
+        updated_at,
+        id IN (
+      		SELECT game_id
+      		FROM user_games
+      		WHERE user_id = ?
+      	) is_joined
       FROM
         games
-      LEFT OUTER JOIN
-        user_games
-      ON
-        games.id = user_games.game_id
-      WHERE
-        user_id IS NULL OR user_id = ?
       `,
       [user_id]
     )
@@ -38,19 +35,17 @@ module.exports = {
         latitude,
         longitude,
         expiration,
-        games.updated_at,
-        last_nudge_at,
-        user_id IS NOT NULL as is_joined
+        updated_at,
+        id IN (
+      		SELECT game_id
+      		FROM user_games
+      		WHERE user_id = ?
+      	) is_joined
       FROM
         games
-      LEFT OUTER JOIN
-        user_games
-      ON
-        games.id = user_games.game_id
-      WHERE
-        id = ? AND (user_id IS NULL OR user_id = ?)
+      WHERE id = ?
       `,
-      [game_id, user_id]
+      [user_id, game_id]
     )
     return resultSet.rows[0]
   },
