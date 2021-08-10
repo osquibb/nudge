@@ -84,9 +84,9 @@ router.post('/:gameId/nudge', async ({ user, params, body, app }, res) => {
     body.direction
   )
   // send nudged game via WebSocket
-  app.ws(`/games/${params.gameId}`, async ws => {
+  app.wss.clients.forEach(async client => {
     const game = await findGameById(params.gameId)
-    ws.send(JSON.stringify(game))
+    client.send(JSON.stringify(game))
   })
 
   res.json(resp)
