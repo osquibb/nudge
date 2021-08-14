@@ -9,7 +9,11 @@ import {
   Typography,
   Button,
   IconButton,
-  Modal
+  Modal,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText
 } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -32,6 +36,9 @@ const useStyles = makeStyles(theme => ({
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+  },
+  list: {
+    width: 250,
   }
 }))
 
@@ -52,11 +59,17 @@ export default function NavBar(props) {
   let history = useHistory()
 
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   const authenticatedUser = useSelector(selectUser);
   const classes = useStyles()
 
   const [signInModalStyle] = useState(getSignInModalStyle);
+
+  const drawerItems = [
+    { text: 'Home', route: '/' },
+    { text: 'Games', route: '/games' }
+  ]
 
   const signOut = async () => {
     await dispatch(logout())
@@ -67,12 +80,19 @@ export default function NavBar(props) {
 
   const closeSignInModal = () => setIsSignInModalOpen(false)
 
+  const toggleDrawer = isOpen => setIsDrawerOpen(isOpen)
+
+  const goTo = route => {
+    history.push(route)
+    toggleDrawer(false)
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+            <MenuIcon onClick={() => toggleDrawer(true)} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             Nudge
@@ -95,6 +115,15 @@ export default function NavBar(props) {
           />
         </div>
       </Modal>
+      <Drawer anchor="left" open={isDrawerOpen} onClose={() => toggleDrawer(false)}>
+        <List className={classes.list}>
+          {drawerItems.map((item, idx) => (
+            <ListItem button key={idx} onClick={() => goTo(item.route)}>
+              <ListItemText primary={item.text}/>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </div>
   )
 }
