@@ -1,5 +1,7 @@
 const db = require('../../db')
 
+const nudgeAmount = 0.01
+
 module.exports = {
   listGames: async () => await db('games').select(),
 
@@ -7,19 +9,27 @@ module.exports = {
     const resultSet = await db.raw(
       `
       SELECT
-        id,
-        title,
-        latitude,
-        longitude,
-        expiration,
-        updated_at,
-        id IN (
-      		SELECT game_id
-      		FROM user_games
-      		WHERE user_id = ?
-      	) is_joined
+      	id,
+      	title,
+      	latitude,
+      	longitude,
+      	expiration,
+      	updated_at,
+      	last_nudge_at,
+      	COALESCE (is_joined, false) is_joined
       FROM
-        games
+      	games
+      LEFT OUTER JOIN (
+      	SELECT
+      		game_id,
+      		last_nudge_at,
+      		true AS is_joined
+      	FROM
+      		user_games
+      	WHERE
+      		user_id = ?
+      ) joined_games
+      	ON games.id = joined_games.game_id
       `,
       [user_id]
     )
@@ -30,20 +40,29 @@ module.exports = {
     const resultSet = await db.raw(
       `
       SELECT
-        id,
-        title,
-        latitude,
-        longitude,
-        expiration,
-        updated_at,
-        id IN (
-      		SELECT game_id
-      		FROM user_games
-      		WHERE user_id = ?
-      	) is_joined
+      	id,
+      	title,
+      	latitude,
+      	longitude,
+      	expiration,
+      	updated_at,
+      	last_nudge_at,
+      	COALESCE (is_joined, false) is_joined
       FROM
-        games
-      WHERE id = ?
+      	games
+      LEFT OUTER JOIN (
+      	SELECT
+      		game_id,
+      		last_nudge_at,
+      		true AS is_joined
+      	FROM
+      		user_games
+      	WHERE
+      		user_id = ?
+      ) joined_games
+      	ON games.id = joined_games.game_id
+      WHERE
+        id = ?
       `,
       [user_id, game_id]
     )
@@ -69,16 +88,16 @@ module.exports = {
       longitude = parseFloat(longitude)
       switch (direction) {
         case 'NORTH':
-          latitude += 0.01
+          latitude += nudgeAmount
           break
         case 'SOUTH':
-          latitude -= 0.01
+          latitude -= nudgeAmount
           break
         case 'EAST':
-          longitude += 0.01
+          longitude += nudgeAmount
           break
         case 'WEST':
-          longitude -= 0.01
+          longitude -= nudgeAmount
           break
       }
       const gameResultSet = await trx('games').where({ id: game_id }).update({ latitude, longitude }, ['id', 'latitude', 'longitude', 'updated_at'])
