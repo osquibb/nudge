@@ -67,7 +67,7 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
   res.json({ games })
 })
 
-router.post('/:gameId/nudge', async ({ user, params, body, app }, res) => {
+router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
 
   // auth
   if (!isPlayer(user)) {
@@ -83,11 +83,6 @@ router.post('/:gameId/nudge', async ({ user, params, body, app }, res) => {
     params.gameId,
     body.direction
   )
-  // send nudged game via WebSocket
-  app.wss.clients.forEach(async client => {
-    const game = await findGameById(params.gameId)
-    client.send(JSON.stringify(game))
-  })
 
   res.json(resp)
 })
