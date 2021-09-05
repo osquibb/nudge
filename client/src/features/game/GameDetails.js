@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectGameById, nudge } from '../game/gameSlice'
+import { selectGameById, nudge, updateGame } from '../game/gameSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IconButton } from '@material-ui/core'
@@ -45,11 +45,12 @@ export default function GameDetails() {
   useEffect(() => {
     if (!ws.current) return
 
-    ws.current.onmessage = (e) => {
-      const message = JSON.parse(e.data)
-      console.log(message)
+    ws.current.onmessage = async ({ data }) => {
+      const { gameToUpdate, games } = await dispatch(
+        updateGame(JSON.parse(data))
+      )
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const clockId = setInterval(() => {

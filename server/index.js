@@ -26,7 +26,7 @@ app.use('/games', gameController)
 
 listenForNudgeNotifications((payload) => {
   wss.clients.forEach((client) => {
-    client.send(JSON.stringify(payload))
+    client.send(payload)
   })
 })
 

@@ -65,6 +65,18 @@ export const nudge = (gameId, direction) => async (dispatch, getState) => {
   }
 }
 
+export const updateGame = (gameToUpdate) => (dispatch, getState) => {
+  try {
+    const { games } = getState()
+    dispatch(
+      setGames(map((g) => (g.id === gameToUpdate.id ? gameToUpdate : g), games))
+    )
+    return { gameToUpdate, games }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const selectGames = (state) => state.games
 export const selectGameById = (id) => (state) =>
   find((g) => g.id === id, state.games)
