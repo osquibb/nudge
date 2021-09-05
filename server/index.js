@@ -12,7 +12,7 @@ const app = express()
 const port = process.env.PORT || 5000
 const server = http.createServer(app)
 
-const wss =  new WebSocket.Server({ server })
+const wss = new WebSocket.Server({ server })
 
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(express.json())
@@ -24,8 +24,8 @@ app.use('/auth', authController)
 app.use('/users', userController)
 app.use('/games', gameController)
 
-listenForNudgeNotifications(payload => {
-  wss.clients.forEach(client => {
+listenForNudgeNotifications((payload) => {
+  wss.clients.forEach((client) => {
     client.send(JSON.stringify(payload))
   })
 })

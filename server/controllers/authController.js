@@ -1,24 +1,24 @@
-const router = require("express").Router();
-const passport = require("../passport");
-const { isLoggedIn } = require("../utils/authUtils");
+const router = require('express').Router()
+const passport = require('../passport')
+const { isLoggedIn } = require('../utils/authUtils')
 
-router.post("/login", passport.authenticate("local"), ({ user }, res) => {
-  res.json(user);
-});
+router.post('/login', passport.authenticate('local'), ({ user }, res) => {
+  res.json(user)
+})
 
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
   if (!isLoggedIn(req.user)) {
-    return res.sendStatus(401);
+    return res.sendStatus(401)
   }
-  req.logOut();
-  res.sendStatus(200);
-});
+  req.logOut()
+  res.sendStatus(200)
+})
 
-router.get("/user", ({ user }, res) => {
+router.get('/user', ({ user }, res) => {
   if (!isLoggedIn(user)) {
-    return res.sendStatus(401);
+    return res.sendStatus(401)
   }
-  res.json(user);
-});
+  res.json(user)
+})
 
-module.exports = router;
+module.exports = router

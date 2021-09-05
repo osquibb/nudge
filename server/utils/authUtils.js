@@ -1,9 +1,9 @@
-const hasRole = (user, role) => user?.roles?.map(r => r.name).includes(role)
+const hasRole = (user, role) => user?.roles?.map((r) => r.name).includes(role)
 
 module.exports = {
-  isLoggedIn: user => user,
-  
-  isAdmin: user => hasRole(user, 'admin'),
+  isLoggedIn: (user) => user,
 
-  isPlayer: user => hasRole(user, 'player')
+  isAdmin: (user) => hasRole(user, 'admin'),
+
+  isPlayer: (user) => hasRole(user, 'player'),
 }

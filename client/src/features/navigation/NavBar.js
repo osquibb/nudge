@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser, logout } from "../user/userSlice";
-import { makeStyles } from "@material-ui/core/styles";
+import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectUser, logout } from '../user/userSlice'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
@@ -14,10 +14,10 @@ import {
   List,
   ListItem,
   ListItemText,
-} from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
-import MenuIcon from "@material-ui/icons/Menu";
-import LoginForm from "../../features/user/LoginForm";
+} from '@material-ui/core'
+import { AccountCircle } from '@material-ui/icons'
+import MenuIcon from '@material-ui/icons/Menu'
+import LoginForm from '../../features/user/LoginForm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,61 +30,61 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   list: {
     width: 250,
   },
-}));
+}))
 
 const getSignInModalStyle = () => {
-  const top = 50;
-  const left = 50;
+  const top = 50
+  const left = 50
 
   return {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
-  };
-};
+  }
+}
 
 export default function NavBar(props) {
-  const dispatch = useDispatch();
-  let history = useHistory();
+  const dispatch = useDispatch()
+  let history = useHistory()
 
-  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  const authenticatedUser = useSelector(selectUser);
-  const classes = useStyles();
+  const authenticatedUser = useSelector(selectUser)
+  const classes = useStyles()
 
-  const [signInModalStyle] = useState(getSignInModalStyle);
+  const [signInModalStyle] = useState(getSignInModalStyle)
 
   const drawerItems = [
-    { text: "Home", route: "/" },
-    { text: "Games", route: "/games" },
-  ];
+    { text: 'Home', route: '/' },
+    { text: 'Games', route: '/games' },
+  ]
 
   const signOut = async () => {
-    await dispatch(logout());
-    history.push("/");
-  };
+    await dispatch(logout())
+    history.push('/')
+  }
 
-  const signIn = () => setIsSignInModalOpen(true);
+  const signIn = () => setIsSignInModalOpen(true)
 
-  const closeSignInModal = () => setIsSignInModalOpen(false);
+  const closeSignInModal = () => setIsSignInModalOpen(false)
 
-  const toggleDrawer = (isOpen) => setIsDrawerOpen(isOpen);
+  const toggleDrawer = (isOpen) => setIsDrawerOpen(isOpen)
 
   const goTo = (route) => {
-    history.push(route);
-    toggleDrawer(false);
-  };
+    history.push(route)
+    toggleDrawer(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -103,7 +103,7 @@ export default function NavBar(props) {
             Nudge
           </Typography>
           <Button onClick={() => (authenticatedUser.id ? signOut() : signIn())}>
-            {authenticatedUser.id ? "Sign Out" : "Sign In"}
+            {authenticatedUser.id ? 'Sign Out' : 'Sign In'}
           </Button>
           {authenticatedUser.id && <AccountCircle />}
         </Toolbar>
@@ -127,5 +127,5 @@ export default function NavBar(props) {
         </List>
       </Drawer>
     </div>
-  );
+  )
 }

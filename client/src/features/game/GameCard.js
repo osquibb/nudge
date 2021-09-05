@@ -13,19 +13,18 @@ import { Add } from '@material-ui/icons'
 import { blue } from '@material-ui/core/colors'
 import { joinGame } from '../game/gameSlice'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
     height: 300,
-    backgroundColor: blue[50]
+    backgroundColor: blue[50],
   },
 }))
 
 export default function GameCard({ game, onClick }) {
-
   const classes = useStyles()
-  const dispatch = useDispatch();
-  const onJoin = gameId => dispatch(joinGame(gameId))
+  const dispatch = useDispatch()
+  const onJoin = (gameId) => dispatch(joinGame(gameId))
 
   return (
     <Card className={classes.root}>

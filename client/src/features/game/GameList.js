@@ -6,7 +6,6 @@ import { Container, Grid } from '@material-ui/core'
 import GameCard from './GameCard'
 
 export default function GameList({ joinedOnly }) {
-
   let history = useHistory()
 
   const dispatch = useDispatch()
@@ -15,19 +14,19 @@ export default function GameList({ joinedOnly }) {
 
   useEffect(() => dispatch(getGames()), [dispatch])
 
-  const goToGame = gameId => {
+  const goToGame = (gameId) => {
     history.push(`/games/${gameId}`)
   }
 
-  return(
+  return (
     <Container>
       <h2>Games List</h2>
       <Grid container spacing={3}>
-        {(joinedOnly ? joinedGames : allGames)?.map(game =>
+        {(joinedOnly ? joinedGames : allGames)?.map((game) => (
           <Grid item key={game.id}>
             <GameCard game={game} onClick={() => goToGame(game.id)} />
           </Grid>
-        )}
+        ))}
       </Grid>
     </Container>
   )

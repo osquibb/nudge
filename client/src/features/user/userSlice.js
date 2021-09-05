@@ -4,7 +4,7 @@ import userService from '../../services/userService'
 const initialState = {
   id: null,
   username: null,
-  roles: []
+  roles: [],
 }
 
 export const userSlice = createSlice({
@@ -12,7 +12,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, { payload: user }) => user,
-    resetUser: () => initialState
+    resetUser: () => initialState,
   },
 })
 
@@ -20,7 +20,7 @@ export const userSlice = createSlice({
 const { setUser, resetUser } = userSlice.actions
 
 // Async thunks
-export const login = (username, password) => async dispatch => {
+export const login = (username, password) => async (dispatch) => {
   try {
     const user = await userService.login(username, password)
     dispatch(setUser(user))
@@ -29,7 +29,7 @@ export const login = (username, password) => async dispatch => {
   }
 }
 
-export const getUser = () => async dispatch => {
+export const getUser = () => async (dispatch) => {
   try {
     const user = await userService.getUser()
     dispatch(setUser(user))
@@ -38,7 +38,7 @@ export const getUser = () => async dispatch => {
   }
 }
 
-export const logout = () => async dispatch => {
+export const logout = () => async (dispatch) => {
   try {
     await userService.logout()
     dispatch(resetUser())
@@ -47,6 +47,6 @@ export const logout = () => async dispatch => {
   }
 }
 
-export const selectUser = state => state.user
+export const selectUser = (state) => state.user
 
 export default userSlice.reducer

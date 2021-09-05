@@ -1,13 +1,13 @@
 const router = require('express').Router()
 const {
-    listGames,
-    findGameById,
-    listGamesAndJoinedStatusByUserId,
-    findGameAndJoinedStatusByGameIdAndUserId,
-    addGame,
-    deleteGameById,
-    addUserToGameByUserIdAndGameId,
-    nudge
+  listGames,
+  findGameById,
+  listGamesAndJoinedStatusByUserId,
+  findGameAndJoinedStatusByGameIdAndUserId,
+  addGame,
+  deleteGameById,
+  addUserToGameByUserIdAndGameId,
+  nudge,
 } = require('../services/gameService')
 const { isLoggedIn, isAdmin, isPlayer } = require('../utils/authUtils')
 
@@ -27,7 +27,10 @@ router.get('/:gameId', async ({ user, params }, res) => {
     return res.sendStatus(401)
   }
   // operation
-  const game = await findGameAndJoinedStatusByGameIdAndUserId(params.gameId, user.id)
+  const game = await findGameAndJoinedStatusByGameIdAndUserId(
+    params.gameId,
+    user.id
+  )
   res.json(game)
 })
 
@@ -37,12 +40,10 @@ router.post('/', async ({ user, body }, res) => {
     return res.sendStatus(401)
   }
   // operation
-  const id = await addGame(
-    {
-      title: body.title,
-      expiration: body.expiration
-    }
-  )
+  const id = await addGame({
+    title: body.title,
+    expiration: body.expiration,
+  })
   res.json({ id })
 })
 
@@ -68,21 +69,19 @@ router.post('/:gameId/join', async ({ user, params }, res) => {
 })
 
 router.post('/:gameId/nudge', async ({ user, params, body }, res) => {
-
   // auth
   if (!isPlayer(user)) {
     return res.sendStatus(401)
   }
   // operation
-  const game = await findGameAndJoinedStatusByGameIdAndUserId(params.gameId, user.id)
+  const game = await findGameAndJoinedStatusByGameIdAndUserId(
+    params.gameId,
+    user.id
+  )
   if (!game.is_joined) {
     return res.sendStatus(401)
   }
-  const resp = await nudge(
-    user.id,
-    params.gameId,
-    body.direction
-  )
+  const resp = await nudge(user.id, params.gameId, body.direction)
 
   res.json(resp)
 })

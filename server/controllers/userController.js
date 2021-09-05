@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const {
-    addUser,
-    listUsers,
-    addUserRole,
-    deleteUserRole
+  addUser,
+  listUsers,
+  addUserRole,
+  deleteUserRole,
 } = require('../services/userService')
 const { isAdmin } = require('../utils/authUtils')
 

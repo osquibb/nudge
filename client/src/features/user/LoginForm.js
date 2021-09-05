@@ -9,38 +9,33 @@ export default function LoginForm({ onSignIn }) {
   const initialUser = { username: '', password: '' }
   const [user, setUser] = useState(initialUser)
 
-  const onUsernameChange = username => setUser(prevUser =>
-    ({ ...prevUser, username })
-  )
+  const onUsernameChange = (username) =>
+    setUser((prevUser) => ({ ...prevUser, username }))
 
-  const onPasswordChange = password => setUser(prevUser =>
-    ({ ...prevUser, password })
-  )
+  const onPasswordChange = (password) =>
+    setUser((prevUser) => ({ ...prevUser, password }))
 
   const signIn = () => {
     dispatch(login(user.username, user.password))
     onSignIn()
   }
 
-  return(
+  return (
     <Container>
       <TextField
         value={user.username}
         label="Username"
         required
-        onChange={e => onUsernameChange(e.target.value)}
+        onChange={(e) => onUsernameChange(e.target.value)}
       />
       <TextField
         value={user.password}
         label="Password"
         required
         type="password"
-        onChange={e => onPasswordChange(e.target.value)}
+        onChange={(e) => onPasswordChange(e.target.value)}
       />
-      <Button onClick={signIn}>
-        Sign In
-      </Button>
+      <Button onClick={signIn}>Sign In</Button>
     </Container>
   )
-
 }

@@ -5,16 +5,18 @@ const gameService = {
     const { data: games } = await axios.get('/games')
     return games
   },
-  getGameById: async gameId => {
+  getGameById: async (gameId) => {
     const { data: game } = await axios.get(`/games/${gameId}`)
     return game
   },
-  joinGameById: async gameId => {
+  joinGameById: async (gameId) => {
     const { data: games } = await axios.post(`/games/${gameId}/join`)
     return games
   },
   nudge: async (gameId, direction) => {
-    const { data: games } = await axios.post(`/games/${gameId}/nudge`, { direction })
+    const { data: games } = await axios.post(`/games/${gameId}/nudge`, {
+      direction,
+    })
     return games
   },
 }

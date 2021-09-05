@@ -1,12 +1,8 @@
 import './App.css'
 import { React, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import { getUser } from './features/user/userSlice'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Container } from '@material-ui/core'
 import NavBar from './features/navigation/NavBar'
 import GameList from './features/game/GameList'
@@ -39,4 +35,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
