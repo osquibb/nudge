@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectGameById, nudge, updateGame } from '../game/gameSlice'
+import { selectUser } from '../user/userSlice'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IconButton } from '@material-ui/core'
@@ -33,6 +34,7 @@ export default function GameDetails() {
     seconds: 0,
   })
   const game = useSelector(selectGameById(id))
+  const currentUser = useSelector(selectUser)
 
   useEffect(() => {
     ws.current = new WebSocket(`ws://localhost:5000/games/${id}`)
@@ -46,9 +48,11 @@ export default function GameDetails() {
     if (!ws.current) return
 
     ws.current.onmessage = async ({ data }) => {
-      const { gameToUpdate, games } = await dispatch(
-        updateGame(JSON.parse(data))
-      )
+      const { game, nudged_by_id } = JSON.parse(data)
+      if (currentUser.id !== nudged_by_id) {
+        console.log('updateGame')
+        await dispatch(updateGame(game))
+      }
     }
   }, [dispatch])
 

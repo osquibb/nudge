@@ -69,7 +69,12 @@ export const updateGame = (gameToUpdate) => (dispatch, getState) => {
   try {
     const { games } = getState()
     dispatch(
-      setGames(map((g) => (g.id === gameToUpdate.id ? gameToUpdate : g), games))
+      setGames(
+        map(
+          (g) => (g.id === gameToUpdate.id ? { ...g, ...gameToUpdate } : g),
+          games
+        )
+      )
     )
     return { gameToUpdate, games }
   } catch (e) {

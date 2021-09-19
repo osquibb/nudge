@@ -136,7 +136,7 @@ module.exports = {
         lastNudgeResultSet[0].last_nudge_at,
       ]
       await trx.raw("SELECT pg_notify('nudge', ?)", [
-        { ...game, last_nudge_at },
+        { game, nudged_by_id: user_id },
       ])
 
       return { game, last_nudge_at }
