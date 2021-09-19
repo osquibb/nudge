@@ -95,22 +95,25 @@ export default function GameDetails() {
           <Popup>Nudge me!</Popup>
         </Marker>
       </MapContainer>
-      {game.is_joined && (
-        <div>
-          <IconButton aria-label="up" onClick={() => onNudge('NORTH')}>
-            <ArrowUpward />
-          </IconButton>
-          <IconButton aria-label="down" onClick={() => onNudge('SOUTH')}>
-            <ArrowDownward />
-          </IconButton>
-          <IconButton aria-label="east" onClick={() => onNudge('EAST')}>
-            <ArrowForward />
-          </IconButton>
-          <IconButton aria-label="west" onClick={() => onNudge('WEST')}>
-            <ArrowBack />
-          </IconButton>
-        </div>
-      )}
+      {game.is_joined &&
+        (timeSinceLastNudge.hours > 1 ||
+          timeSinceLastNudge.minutes > 1 ||
+          timeSinceLastNudge.seconds > 10) && (
+          <div>
+            <IconButton aria-label="up" onClick={() => onNudge('NORTH')}>
+              <ArrowUpward />
+            </IconButton>
+            <IconButton aria-label="down" onClick={() => onNudge('SOUTH')}>
+              <ArrowDownward />
+            </IconButton>
+            <IconButton aria-label="east" onClick={() => onNudge('EAST')}>
+              <ArrowForward />
+            </IconButton>
+            <IconButton aria-label="west" onClick={() => onNudge('WEST')}>
+              <ArrowBack />
+            </IconButton>
+          </div>
+        )}
     </div>
   )
 }
