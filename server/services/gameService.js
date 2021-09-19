@@ -1,5 +1,6 @@
 const db = require('../../db')
 
+const nudgeDelay = 10000
 const nudgeAmount = 0.01
 
 module.exports = {
@@ -85,11 +86,23 @@ module.exports = {
 
   nudge: async (user_id, game_id, direction) =>
     await db.transaction(async (trx) => {
-      let { latitude, longitude } = await trx
-        .select('latitude', 'longitude')
+      let {
+        latitude,
+        longitude,
+        last_nudge_at: prev_last_nudge_at,
+      } = await trx
+        .select('latitude', 'longitude', 'last_nudge_at')
         .from('games')
+        .innerJoin('user_games', 'games.id', 'user_games.game_id')
         .where({ id: game_id })
         .first()
+
+      if (new Date() - prev_last_nudge_at < nudgeDelay) {
+        throw new Error(
+          `Unable to nudge, try again later.  Nudge delay ${nudgeDelay}`
+        )
+      }
+
       latitude = parseFloat(latitude)
       longitude = parseFloat(longitude)
       switch (direction) {
