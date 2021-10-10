@@ -28,7 +28,8 @@ The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
 ## Database Configuration
-A PostgreSQL database should be running on http://localhost:5432 
+A PostgreSQL database named `nudge` should be running on http://localhost:5432
+`CREATE USER nudge_admin WITH PASSWORD 'password'`
 
 See configuration in ~/server.js.
 
@@ -45,3 +46,6 @@ Runs the next chronological migration that has not yet be run.
 
 ### `knex migrate:down`
 Will undo the last migration that was run.
+
+## Database Seed
+### `knex seed:run`
