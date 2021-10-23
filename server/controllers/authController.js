@@ -1,9 +1,7 @@
-const dotenv = require('dotenv')
+require('dotenv').config()
 const router = require('express').Router()
 const passport = require('../passport')
 const { isLoggedIn } = require('../utils/authUtils')
-
-dotenv.config()
 
 router.post('/login', passport.authenticate('local'), ({ user }, res) => {
   res.json(user)

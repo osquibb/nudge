@@ -1,15 +1,13 @@
+require('dotenv').config()
 const express = require('express')
 const session = require('express-session')
 const passport = require('./passport')
-const dotenv = require('dotenv')
 const WebSocket = require('ws')
 const http = require('http')
 const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
 const gameController = require('./controllers/gameController')
 const { listenForNudgeNotifications } = require('./services/gameService')
-
-dotenv.config()
 
 const app = express()
 const port = process.env.SERVER_PORT
