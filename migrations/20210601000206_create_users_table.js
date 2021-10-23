@@ -5,7 +5,8 @@ exports.up = async function (knex) {
     .dropTableIfExists(tableName)
     .createTable(tableName, (table) => {
       table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'))
-      table.string('username').notNullable()
+      table.string('google_id').nullable()
+      table.string('username').nullable()
       table.string('password').nullable()
       table.timestamps(true, true)
     })

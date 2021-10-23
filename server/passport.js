@@ -1,6 +1,10 @@
+const dotenv = require('dotenv')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const { findUser, findUserById } = require('./services/userService')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const { findUser, findUserById, findOrAddUserByGoogleId } = require('./services/userService')
+
+dotenv.config()
 
 const localStrategy = new LocalStrategy(async (username, password, done) => {
   const user = await findUser({ username, password })
@@ -13,7 +17,21 @@ const localStrategy = new LocalStrategy(async (username, password, done) => {
   }
 })
 
+const googleStrategy = new GoogleStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `http://localhost:${process.env.SERVER_PORT}/auth/google/callback`,
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    const user = await findOrAddUserByGoogleId(profile.id)
+    console.log('authenticated')
+    return done(null, user)
+  }
+)
+
 passport.use(localStrategy)
+passport.use(googleStrategy)
 
 passport.serializeUser((user, done) => {
   console.log(`serializeUser ${user.id}`)

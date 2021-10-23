@@ -1,10 +1,23 @@
+const dotenv = require('dotenv')
 const router = require('express').Router()
 const passport = require('../passport')
 const { isLoggedIn } = require('../utils/authUtils')
 
+dotenv.config()
+
 router.post('/login', passport.authenticate('local'), ({ user }, res) => {
   res.json(user)
 })
+
+router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    res.redirect(`http://localhost:${process.env.CLIENT_PORT}`)
+  }
+)
 
 router.get('/logout', (req, res) => {
   if (!isLoggedIn(req.user)) {

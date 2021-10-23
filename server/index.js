@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const passport = require('./passport')
+const dotenv = require('dotenv')
 const WebSocket = require('ws')
 const http = require('http')
 const authController = require('./controllers/authController')
@@ -8,13 +9,15 @@ const userController = require('./controllers/userController')
 const gameController = require('./controllers/gameController')
 const { listenForNudgeNotifications } = require('./services/gameService')
 
+dotenv.config()
+
 const app = express()
-const port = process.env.PORT || 5000
+const port = process.env.SERVER_PORT
 const server = http.createServer(app)
 
 const wss = new WebSocket.Server({ server })
 
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }))
 app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
