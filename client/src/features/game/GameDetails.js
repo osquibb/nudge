@@ -54,7 +54,7 @@ export default function GameDetails() {
         await dispatch(updateGame(game))
       }
     }
-  }, [dispatch])
+  }, [dispatch, currentUser.id])
 
   useEffect(() => {
     const clockId = setInterval(() => {
