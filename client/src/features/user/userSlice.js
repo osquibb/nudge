@@ -29,6 +29,15 @@ export const login = (username, password) => async (dispatch) => {
   }
 }
 
+export const loginWithGoogle = () => async (dispatch) => {
+  try {
+    const user = await userService.loginWithGoogle()
+    dispatch(setUser(user))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const getUser = () => async (dispatch) => {
   try {
     const user = await userService.getUser()

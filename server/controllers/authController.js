@@ -7,13 +7,14 @@ router.post('/login', passport.authenticate('local'), ({ user }, res) => {
   res.json(user)
 })
 
-router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
+router.get('/google/login', passport.authenticate('google', { scope: ['profile'] }))
 
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect(`http://localhost:${process.env.CLIENT_PORT}`)
+  ({ user }, res) => {
+    res.json(user)
+    // res.redirect(`http://localhost:${process.env.CLIENT_PORT}`)
   }
 )
 

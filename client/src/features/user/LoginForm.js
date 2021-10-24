@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { login } from '../user/userSlice'
+import { login, loginWithGoogle } from '../user/userSlice'
 import { Container, TextField, Button } from '@material-ui/core'
 
 export default function LoginForm({ onSignIn }) {
@@ -20,8 +20,15 @@ export default function LoginForm({ onSignIn }) {
     onSignIn()
   }
 
+  const signInWithGoogle = () => {
+    dispatch(loginWithGoogle())
+    onSignIn()
+  }
+
   return (
     <Container>
+      <Button onClick={signInWithGoogle}>Sign In With Google</Button>
+      <br/>
       <TextField
         value={user.username}
         label="Username"

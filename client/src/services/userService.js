@@ -6,6 +6,11 @@ const userService = {
     return data
   },
 
+  loginWithGoogle: async () => {
+    const { data } = await axios.get('/auth/google/login')
+    return data
+  },
+
   getUser: async () => {
     const { data } = await axios.get('/auth/user')
     return data
